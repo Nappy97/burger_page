@@ -1,0 +1,19 @@
+spring:
+  # mysql
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/nappy?serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
+
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+      use-new-id-generate-mappings: false
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+
+    thymeleaf:
+      cache: false
