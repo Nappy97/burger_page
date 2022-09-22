@@ -18,9 +18,4 @@ public class HelloController {
         return new HelloResponseDto(name, nickname);
     }
 
-    @GetMapping
-    public String index(){
-        return "index";
-    }
-
 }

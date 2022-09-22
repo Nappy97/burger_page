@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:fragment="head(title)">
+<head th:fragment="head (title)">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link th:href="@{../../static/css/sticky-footer-navbar.css}" rel="stylesheet">
-    <link rel="stylesheet" th:href="@{../../static/css/style.css}">
-    <link rel="stylesheet" th:href="@{../../static/css/user-save.css}">
+    <link th:href="@{../../css/sticky-footer-navbar.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{../../css/style.css}">
+    <link rel="stylesheet" th:href="@{../../css/user-save.css}">
+
     <title th:text="${title}">블로그</title>
 
 </head>
 
 <body>
 
-<header th:fragment="header">
+<header th:fragment="header" style="margin-bottom: 25px;">
     <!-- Fixed navbar -->
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
@@ -26,19 +27,26 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="/user/login">로그인</a>
+                        <a sec:authorize="isAnonymous()" class="nav-link" href="/auth/user/login">로그인</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/user/save">회원가입</a>
+                        <a sec:authorize="isAnonymous()" class="nav-link" href="/auth/user/save">회원가입</a>
+                    </li>
+                    <li class="nav-item">
+                        <a sec:authorize="isAuthenticated()" class="nav-link" href="/board/save">글작성</a>
+                    </li>
+                    <li class="nav-item">
+                        <a sec:authorize="isAuthenticated()" class="nav-link" href="/user/update">회원정보</a>
+                    </li>
+                    <li class="nav-item">
+                        <a sec:authorize="isAuthenticated()" class="nav-link" href="/logout">로그아웃</a>
                     </li>
                 </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
+
             </div>
         </div>
     </nav>
