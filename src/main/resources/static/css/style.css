@@ -1,0 +1,27 @@
+.card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+}
+
+.a-title {
+    text-decoration: none;
+    color: #4e423b;
+}
+
+.a-title:hover {
+    color: #15751b;
+    text-decoration: underline;
+}
+
+p {
+    word-break: break-all;
+    text-align: left;
+}
+
+h3 {
+    word-break: break-all;
+}
