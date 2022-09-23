@@ -1,4 +1,4 @@
-package com.nappy.burger.domain.reply;
+package com.nappy.burger.domain.boardReply;
 
 import com.nappy.burger.domain.BaseTimeEntity;
 import com.nappy.burger.domain.board.Board;
@@ -15,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Reply extends BaseTimeEntity {
+public class boardReply extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

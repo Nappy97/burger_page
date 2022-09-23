@@ -17,7 +17,7 @@
     <tbody>
     <tr>
         <th scope="row" th:text="${board.id}" id="id"></th>
-        <td th:text="${board.user.username}"></td>
+        <td th:text="${board.user.nickname}"></td>
         <td th:text="${board.count}"></td>
     </tr>
     </tbody>
@@ -52,8 +52,8 @@
                 <input type="hidden" id="boardId" th:value="${board.id}">
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
-                        <textarea class="form-control" id="reply-content" rows="1"></textarea>
-                        <button id="reply-btn-save" type="button" class="btn btn-dark mt-3">등록</button>
+                        <textarea class="form-control" id="boardReply-content" rows="1"></textarea>
+                        <button id="boardReply-btn-save" type="button" class="btn btn-dark mt-3">등록</button>
                     </li>
                 </ul>
             </div>
@@ -62,13 +62,13 @@
     <br/>
     <div class="card">
         <div class="card-header">댓글</div>
-        <ul id="reply--box" class="list-group" th:each="reply : ${board.replyList}">
-            <li th:id="'reply--' + ${reply.id}" class="list-group-item d-flex justify-content-between">
-                <div th:text="${reply.content}"></div>
+        <ul id="boardReply--box" class="list-group" th:each="boardReply : ${board.getBoardReplyList}">
+            <li th:id="'boardReply--' + ${boardReply.id}" class="list-group-item d-flex justify-content-between">
+                <div th:text="${boardReply.content}"></div>
                 <div class="d-flex" >
-                    <span class="text-monospace">작성자: &nbsp;</span><div class="text-monospace" th:text="${reply.user.username}"></div>
-                    <span th:if="${reply.user.id == #authentication.principal.id}">
-                        <button th:onclick="|replyIndex.replyDelete('${board.id}', '${reply.id}')|" class="badge btn-danger" style="margin-left: 10px;">삭제</button>
+                    <span class="text-monospace">작성자: &nbsp;</span><div class="text-monospace" th:text="${boardReply.user.nickname}"></div>
+                    <span th:if="${boardReply.user.id == #authentication.principal.id}">
+                        <button th:onclick="|replyIndex.replyDelete('${board.id}', '${boardReply.id}')|" class="badge btn-danger" style="margin-left: 10px;">삭제</button>
                     </span>
                 </div>
             </li>
@@ -86,7 +86,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script th:src="@{/js/board.js}"></script>
-<script th:src="@{/js/reply.js}"></script>
+<script th:src="@{/js/boardReply.js}"></script>
 </body>
 
 </html>

@@ -2,7 +2,7 @@ package com.nappy.burger.domain.board;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nappy.burger.domain.BaseTimeEntity;
-import com.nappy.burger.domain.reply.Reply;
+import com.nappy.burger.domain.boardReply.boardReply;
 import com.nappy.burger.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,7 +39,7 @@ public class Board extends BaseTimeEntity {
     @OrderBy("id desc")
     @JsonIgnoreProperties({"board"})
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    private List<Reply> replyList;
+    private List<boardReply> boardReplyList;
 
     public void update(String title, String content) {
         this.title = title;
