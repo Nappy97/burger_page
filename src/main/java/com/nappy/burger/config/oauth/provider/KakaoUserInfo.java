@@ -31,4 +31,5 @@ public class KakaoUserInfo implements OAuth2UserInfo {
         Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
         return (String) properties.get("nickname");
     }
+
 }
