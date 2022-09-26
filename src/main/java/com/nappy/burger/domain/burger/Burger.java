@@ -32,6 +32,9 @@ public class Burger extends BaseTimeEntity {
     @Lob
     private String explanation;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Set set;
     @Column(nullable = false, length = 200)
     private int price;
 
@@ -42,5 +45,10 @@ public class Burger extends BaseTimeEntity {
         this.explanation = explanation;
         this.price = price;
         this.type = type;
+    }
+
+    // 세트 여부
+    public String getSetKey() {
+        return this.set.getKey();
     }
 }

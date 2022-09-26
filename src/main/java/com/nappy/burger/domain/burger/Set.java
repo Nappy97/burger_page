@@ -1,4 +1,4 @@
-package com.nappy.burger.domain.order;
+package com.nappy.burger.domain.burger;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

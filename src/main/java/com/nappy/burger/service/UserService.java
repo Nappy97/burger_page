@@ -22,7 +22,23 @@ public class UserService {
     public Long save(User user){
         String hashPw = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(hashPw);
+        validateDuplicateUser(user);
         return userRepository.save(user).getId();
+    }
+
+    // 중복회원 검증
+    public void validateDuplicateUser(User user) {
+        User emailChk = userRepository.findByEmail(user.getEmail());
+        User usernameChk = userRepository.findByUsername(user.getUsername());
+        User nicknameChk = userRepository.findByNickname(user.getNickname());
+
+        if (usernameChk != null) {
+            throw new IllegalStateException("이미 가입된 회원입니다");
+        } else if (emailChk != null) {
+            throw  new IllegalStateException("중복된 이메일입니다");
+        } else if (nicknameChk != null) {
+            throw new IllegalStateException("중복된 닉네임입니다");
+        }
     }
 
     // 회원수정

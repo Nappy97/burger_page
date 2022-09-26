@@ -24,7 +24,7 @@ public class CustomBurgerService {
 
     // 버거 목록
     @Transactional(readOnly = true)
-    Page<CustomBurger> findByNameContainingOrPattyContaining(String name, String patty, String bread, String source, String additional, Pageable pageable) {
+    public Page<CustomBurger> findByNameContainingOrPattyContaining(String name, String patty, String bread, String source, String additional, Pageable pageable) {
         return customBurgerRepository.findByNameContainingOrPattyContaining(name, patty, bread, source, additional, pageable);
     }
 

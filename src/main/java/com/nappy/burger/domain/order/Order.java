@@ -29,15 +29,10 @@ public class Order {
     @Column(nullable = false, length = 200)
     private int totalPrice;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Set set;
+
 
     @Lob
     private String review;
 
-    // 세트 여부
-    public String getSetKey(){
-        return this.set.getKey();
-    }
+
 }

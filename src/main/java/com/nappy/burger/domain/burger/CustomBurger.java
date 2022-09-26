@@ -43,6 +43,10 @@ public class CustomBurger extends BaseTimeEntity {
     @Column(nullable = false, length = 200)
     private int price;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Set set;
+
     // 수정
     public void update(String name, String explanation, int price, String type, String bread, String source, String patty, String additional) {
         this.name = name;
@@ -53,5 +57,10 @@ public class CustomBurger extends BaseTimeEntity {
         this.source = source;
         this.patty = patty;
         this.additional = additional;
+    }
+
+    // 세트 여부
+    public String getSetKey() {
+        return this.set.getKey();
     }
 }

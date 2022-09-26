@@ -1,6 +1,7 @@
 package com.nappy.burger.dto.burger;
 
 import com.nappy.burger.domain.burger.Burger;
+import com.nappy.burger.domain.burger.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class BurgerSaveRequestDto {
     private String content;
     private String explanation;
     private int price;
+    private Set set;
 
     public Burger toEntity(){
         return Burger.builder()
@@ -25,6 +27,7 @@ public class BurgerSaveRequestDto {
                 .content(content)
                 .explanation(explanation)
                 .price(price)
+                .set(set)
                 .build();
     }
 }

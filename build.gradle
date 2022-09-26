@@ -1,7 +1,14 @@
+buildscript {
+    ext{
+        queryDslVersion = "5.0.0"
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
     id 'java'
+    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
 group = 'com.nappy'
@@ -20,6 +27,7 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.jetbrains:annotations:20.1.0'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     //롬복 설정 시작
     compileOnly 'org.projectlombok:lombok'
@@ -36,8 +44,45 @@ dependencies {
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'com.kakao.sdk:v2-user:2.4.2'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+
+    // querydsl 설정
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+    implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.7.3'
+    implementation group: 'org.springframework.security', name: 'spring-security-config', version: '5.7.3'
+    implementation group: 'org.springframework.security', name: 'spring-security-web', version: '5.7.3'
+
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+// querydsl 추가설정
+def querydslDir = "$buildDir/generated/querydsl"
+
+querydsl {
+    library = "com.querydsl:querydsl-apt"
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+sourceSets {
+    main.java.srcDir querydslDir
+}
+compileQuerydsl{
+    options.annotationProcessorPath = configurations.querydsl
+}
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    querydsl.extendsFrom compileClasspath
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+

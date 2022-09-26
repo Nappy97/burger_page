@@ -1,7 +1,7 @@
 package com.nappy.burger.dto.order;
 
 import com.nappy.burger.domain.order.Order;
-import com.nappy.burger.domain.order.Set;
+import com.nappy.burger.domain.burger.Set;
 import com.nappy.burger.domain.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +24,6 @@ public class OrderSaveRequestDto {
                 .totalPrice(totalPrice)
                 .user(user)
                 .userAdd(userAdd)
-                .set(set)
                 .build();
     }
 

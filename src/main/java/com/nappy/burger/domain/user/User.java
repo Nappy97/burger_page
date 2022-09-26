@@ -25,11 +25,23 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false, length = 100)
     private String password;
 
-    @Column(nullable = false, length = 30)
+    @Column(length = 30, unique = true)
     private String email;
 
-    @Column(nullable = false, length = 20)
+    @Column(length = 20, unique = true)
     private String nickname;
+
+//    @Column(length = 50)
+//    private String name;
+//
+//    @Column(length = 50)
+//    private int zipcode;
+//
+//    @Column(length = 200)
+//    private String address;
+//
+//    @Column(length = 200)
+//    private String detailAddress;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -57,14 +69,22 @@ public class User extends BaseTimeEntity {
 
 
     // 회원수정 메소드
-    public User update(String password, String nickname) {
+    public User update(String password, String nickname
+//                       ,String name, int zipcode, String address, String detailAddress, String email
+                       ) {
         this.password = password;
         this.nickname = nickname;
+//        this.name = name;
+//        this.zipcode = zipcode;
+//        this.address = address;
+//        this.detailAddress = detailAddress;
+//        this.email = email;
         return this;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
+
+
 }
 
