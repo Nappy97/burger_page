@@ -14,6 +14,7 @@ import javax.persistence.*;
 @Entity
 @ToString
 @Setter
+@Table(name = "item")
 public class Burger extends BaseEntity {
 
     @Id

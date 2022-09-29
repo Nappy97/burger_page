@@ -9,10 +9,11 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@Table(name = "burger_img")
 public class BurgerImg extends BaseEntity {
 
     @Id
-    @Column(name = "item_img_id")
+    @Column(name = "burger_img_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

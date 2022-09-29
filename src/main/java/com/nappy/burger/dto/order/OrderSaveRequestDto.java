@@ -16,7 +16,7 @@ public class OrderSaveRequestDto {
     private int totalPrice;
     private User user;
     private String userAdd;
-    private Set set;
+
 
     public Order toEntity(){
         return Order.builder()

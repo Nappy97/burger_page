@@ -24,7 +24,7 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img class="d-block w-100"
-                     src="images/burger/test1.jpg"
+                     th:src="@{images/burger/test1.jpg}"
                      alt="First slide">
             </div>
             <div class="carousel-item">
@@ -74,7 +74,7 @@
         <ul class="pagination justify-content-center">
 
             <li class="page-item" th:classappend="${burgers.number eq 0}?'disabled':''">
-                <a th:href="@{'/' + '?searchQuery=' + ${burgerSearchDto.searchQuery} + '&page=' + ${bugers.number-1}}"
+                <a th:href="@{'/' + '?searchQuery=' + ${burgerSearchDto.searchQuery} + '&page=' + ${burgers.number-1}}"
                    aria-label='Previous' class="page-link">
                     <span aria-hidden='true'>Previous</span>
                 </a>

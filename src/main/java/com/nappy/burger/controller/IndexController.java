@@ -18,7 +18,7 @@ public class IndexController {
 
     private final BoardService boardService;
 
-    @GetMapping("/")
+    @GetMapping("/a")
     public String index(Model model,
                         @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                         @RequestParam(required = false, defaultValue = "") String search) {

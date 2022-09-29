@@ -61,7 +61,7 @@ public class BurgerService {
     public BurgerFormDto getBurgerDetail(Long burgerId){
 
         // 이미지 Entity 들을 burgerImgDto 로 변환하여 burgerImgDtoList 에 담기
-        List<BurgerImg> burgerImgList = burgerImgRepository.findByBurgerIdOrderByIdAAsc(burgerId);
+        List<BurgerImg> burgerImgList = burgerImgRepository.findByBurgerIdOrderByIdAsc(burgerId);
         List<BurgerImgDto> burgerImgDtoList = new ArrayList<>();
 
         for (BurgerImg burgerImg : burgerImgList){

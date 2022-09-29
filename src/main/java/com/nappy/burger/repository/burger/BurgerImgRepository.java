@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface BurgerImgRepository extends JpaRepository<BurgerImg, Long> {
 
-    List<BurgerImg> findByBurgerIdOrderByIdAAsc(Long burgerId);
+    List<BurgerImg> findByBurgerIdOrderByIdAsc(Long burgerId);
 
     BurgerImg findByBurgerIdAndRepimgYn(Long burgerId, String repimgYn);
 }
