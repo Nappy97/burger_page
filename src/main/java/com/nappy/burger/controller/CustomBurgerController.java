@@ -1,7 +1,5 @@
 package com.nappy.burger.controller;
 
-import com.nappy.burger.domain.burger.CustomBurger;
-import com.nappy.burger.service.CustomBurgerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
