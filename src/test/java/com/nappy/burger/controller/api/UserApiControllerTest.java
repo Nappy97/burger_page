@@ -2,8 +2,7 @@ package com.nappy.burger.controller.api;
 
 import com.nappy.burger.domain.user.Role;
 import com.nappy.burger.domain.user.User;
-import com.nappy.burger.domain.user.UserRepository;
-import com.nappy.burger.dto.user.UserSaveRequestDto;
+import com.nappy.burger.repository.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -68,6 +68,25 @@ public class PrincipalDetail implements UserDetails, OAuth2User {
         return user.getId();
     }
 
+    // 사용자 이름
+    public String getName(){
+        return user.getName();
+    }
+
+    // 사용자 zipcode
+    public int getZipcode(){
+        return user.getZipcode();
+    }
+
+    // 사용자 address & detail
+    public String getAddress(){
+        return user.getAddress();
+    }
+
+    public String getDetailAddress(){
+        return user.getDetailAddress();
+    }
+
     //계정이 만료되었는지 (true: 만료되지 않음)
     @Override
     public boolean isAccountNonExpired() {
@@ -90,11 +109,6 @@ public class PrincipalDetail implements UserDetails, OAuth2User {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    @Override
-    public String getName() {
-        return null;
     }
 
     @Override

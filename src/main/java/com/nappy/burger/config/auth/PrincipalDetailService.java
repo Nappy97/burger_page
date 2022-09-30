@@ -1,7 +1,7 @@
 package com.nappy.burger.config.auth;
 
 import com.nappy.burger.domain.user.User;
-import com.nappy.burger.domain.user.UserRepository;
+import com.nappy.burger.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

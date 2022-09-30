@@ -1,5 +1,6 @@
 package com.nappy.burger.domain.user;
 
+import com.nappy.burger.repository.user.UserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

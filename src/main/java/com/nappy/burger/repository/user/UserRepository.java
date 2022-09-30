@@ -1,5 +1,6 @@
-package com.nappy.burger.domain.user;
+package com.nappy.burger.repository.user;
 
+import com.nappy.burger.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
