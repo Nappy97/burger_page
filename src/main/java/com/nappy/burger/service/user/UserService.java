@@ -1,23 +1,28 @@
 package com.nappy.burger.service.user;
 
+import com.nappy.burger.config.auth.PrincipalDetail;
 import com.nappy.burger.domain.user.User;
 import com.nappy.burger.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final UserRepository userRepository;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     // 회원가입 로직
-    public User saveUser(User user){
+    public Long saveUser(User user) {
+        String hasPw = bCryptPasswordEncoder.encode(user.getPassword());
+        user.setPassword(hasPw);
         validateDuplicateUser(user);
-        return userRepository.save(user);
+        return userRepository.save(user).getId();
     }
 
     // 중복회원 검증
@@ -29,33 +34,19 @@ public class UserService implements UserDetailsService {
         if (usernameChk != null) {
             throw new IllegalStateException("이미 가입된 회원입니다");
         } else if (emailChk != null) {
-            throw  new IllegalStateException("중복된 이메일입니다");
+            throw new IllegalStateException("중복된 이메일입니다");
         } else if (nicknameChk != null) {
             throw new IllegalStateException("중복된 닉네임입니다");
         }
     }
 
-    // 로그인 요청 검증을 위한 User 객체
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-
-        if (user == null){
-            throw new UsernameNotFoundException(username);
-        }
-
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .roles(user.getRoleKey())
-                .build();
+    @Transactional
+    public Long updateUser(User user, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+        User userEntity = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("해당 회원이 없습니다. id=" + user.getId()));
+        userEntity.update(bCryptPasswordEncoder.encode(user.getPassword()), user.getNickname(),
+                user.getName(), user.getZipcode(), user.getAddress(), user.getDetailAddress(),
+                user.getEmail());
+        principalDetail.setUser(userEntity);
+        return userEntity.getId();
     }
-//    // 회원수정
-//    @Transactional
-//    public Long update(User user, @AuthenticationPrincipal PrincipalDetail principalDetail) {
-//        User userEntity = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("해당 회원이 없습니다. id=" + user.getId()));
-//        userEntity.update(bCryptPasswordEncoder.encode(user.getPassword()), user.getNickname());
-//        principalDetail.setUser(userEntity); //시큐리티 세션 정보 변경
-//        return userEntity.getId();
-//    }
 }

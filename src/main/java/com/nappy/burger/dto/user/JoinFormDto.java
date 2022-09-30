@@ -1,7 +1,7 @@
 package com.nappy.burger.dto.user;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.nappy.burger.domain.user.User;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
@@ -9,7 +9,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class JoinFormDto {
 
     @NotBlank(message = "아이디는 필수입력입니다")
@@ -39,4 +41,17 @@ public class JoinFormDto {
     @NotBlank(message = "상세주소는 필수 입력 값입니다")
     private String detailAddress;
 
+
+    public User toEntity() {
+        return User.builder()
+                .username(username)
+                .password(password)
+                .email(email)
+                .nickname(nickname)
+                .zipcode(zipcode)
+                .address(address)
+                .detailAddress(detailAddress)
+                .name(name)
+                .build();
+    }
 }
