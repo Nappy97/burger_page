@@ -33,9 +33,9 @@
 ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white)
 
 # 추가예정
-## 1. OAUTH(추가 정보 받기 페이지 ex) 주소등 )
-## 2. 결제
-## 3. 장바구니
-## 4. 템플릿 & 유효성
-## 5. 구조
+## 1. OAUTH(기본시스템 완, 추가정보 받을 수있게 만들기)
+## 2. 결제 (결제시스템 추가하기)
+## 3. 장바구니 (만듬)
+## 4. 템플릿 & 유효성 (거의 끝 중복 실시간 체크 남음, 주소 입력하는 api만들기)
+## 5. 구조 (완)
 ## 6. etc
