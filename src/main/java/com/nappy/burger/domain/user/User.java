@@ -53,6 +53,7 @@ public class User extends BaseTimeEntity {
     private String providerId;
 
 
+
     /**
      * 권한 메소드
      */
