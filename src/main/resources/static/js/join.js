@@ -49,6 +49,10 @@ const dAddressSMessage = document.querySelector('.dAddressS-message');
 
 const elSubmitButton = document.querySelector('#subit-button');
 
+let idChk = null;
+let nickChk = null;
+let emailChk = null;
+
 //-------- 유효성 검사 ---------//
 
 // { 아이디 } input 유효성 검사
@@ -183,7 +187,123 @@ function name1Fn() {
 name1.addEventListener('click', name1Fn);
 name1.addEventListener('keyup', name1Fn);
 
+function zipcodeFn() {
+    if (nullChk(zipcode.value)) {
+        zipcodeSMessage.classList.remove('hide');
+        zipcodeFMessage.classList.add('hide')
+    } else {
+        zipcodeFMessage.classList.remove('hide');
+        zipcodeSMessage.classList.add('hide');
+    }
 
+    isSubmitButton();
+}
+
+zipcode.addEventListener('click', zipcodeFn);
+zipcode.addEventListener('keyup', zipcodeFn);
+
+function addressFn() {
+    if (nullChk(address.value)) {
+        addressSMessage.classList.remove('hide');
+        addressFMessage.classList.add('hide')
+    } else {
+        addressFMessage.classList.remove('hide');
+        addressSMessage.classList.add('hide');
+    }
+
+    isSubmitButton();
+}
+
+address.addEventListener('click', addressFn);
+address.addEventListener('keyup', addressFn);
+
+function detailAddressFn() {
+    if (nullChk(detailAddress.value)) {
+        dAddressSMessage.classList.remove('hide');
+        dAddressFMessage.classList.add('hide')
+    } else {
+        dAddressFMessage.classList.remove('hide');
+        dAddressSMessage.classList.add('hide');
+    }
+
+    isSubmitButton();
+}
+
+detailAddress.addEventListener('click', detailAddressFn);
+detailAddress.addEventListener('keyup', detailAddressFn);
+
+// 중복체크
+// 아이디
+$('#username').on("propertychange, change keyup paste input", function () {
+    console.log("테스트");
+
+    var username = $('#username').val();
+    var data = {username: username}
+    $.ajax({
+        type: "post",
+        url: "/auth/user/saveProc/idCheck",
+        data: data,
+        success: function (resultId) {
+            console.log("성공 여부 " + resultId);
+            if (resultId == "true") {
+                $('.id_input_re_1').css("display", "inline-block");
+                $('.id_input_re_2').css("display", "none");
+                idChk = "true";
+            } else {
+                $('.id_input_re_2').css("display", "inline-block");
+                $('.id_input_re_1').css("display", "none");
+                idChk = "false";
+            }
+        }
+    });
+});
+
+// 닉네임
+$('#nickname').on("propertychange, change keyup paste input", function () {
+
+    var nickname = $('#nickname').val();
+    var data = {nickname: nickname}
+    $.ajax({
+        type: "post",
+        url: "/auth/user/saveProc/nicknameCheck",
+        data: data,
+        success: function (resultNick) {
+            console.log("성공 여부 " + resultNick);
+            if (resultNick == "true") {
+                $('.nick_input_re_1').css("display", "inline-block");
+                $('.nick_input_re_2').css("display", "none");
+                nickChk = "true";
+            } else {
+                $('.nick_input_re_2').css("display", "inline-block");
+                $('.nick_input_re_1').css("display", "none");
+                nickChk = "false";
+            }
+        }
+    });
+});
+
+// 이메일
+$('#email').on("propertychange, change keyup paste input", function () {
+    var email = $('#email').val();
+    var data = {email: email}
+    $.ajax({
+        type: "post",
+        url: "/auth/user/saveProc/emailCheck",
+        data: data,
+        success: function (resultEmail) {
+            console.log("성공 여부 " + resultEmail);
+            if (resultEmail == "true") {
+                $('.email_input_re_1').css("display", "inline-block");
+                $('.email_input_re_2').css("display", "none");
+                emailChk = "true";
+            } else {
+                $('.email_input_re_2').css("display", "inline-block");
+                $('.email_input_re_1').css("display", "none");
+                emailChk = "false";
+            }
+        }
+    });
+});
 //-------- 최종 유효성 검사에서 사용하는 함수 ---------//
 
 // 모든 조건이 충족되었는지 확인하는 함수
@@ -202,11 +322,17 @@ function isAllCheck() {
                 if (isName1Char(name1.value)) {
                     if (isEmailOk(email.value)) {
                         if (isMoreThan4Length(nickname.value)) {
-                            if (zipcode != null) {
-                                if (address != null) {
-                                    if (detailAddress != null) {
-                                        console.log("validationend");
-                                        return true;
+                            if (nullChk(zipcode.value)) {
+                                if (nullChk(address.value)) {
+                                    if (nullChk(detailAddress.value)) {
+                                        if (idChk == "true") {
+                                            if (nickChk == "true") {
+                                                if (emailChk == "true") {
+                                                    console.log("validationend");
+                                                    return true;
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -282,6 +408,11 @@ document.getElementById("joinForm").onsubmit = function () {
 
 
 //-------- 유효성 검사에서 사용하는 함수다 ---------//
+
+// null 이 아닌경우
+function nullChk(value) {
+    return value.length >= 1;
+}
 
 // [아이디] 길이가 4자 이상이면 true를 리턴하는 함수
 function isMoreThan4Length(value) {

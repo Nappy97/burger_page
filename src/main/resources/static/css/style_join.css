@@ -71,7 +71,7 @@ body {
 #subit-button.allCheck {
     color: #fff;
     border: 2px solid #5f0081;
-    background: #5f0081;
+    background: linear-gradient(45deg, #0BDCE0, #816AEE, #FE0AFF);
     cursor: pointer;
 }
 
@@ -103,4 +103,17 @@ body {
 }
 .msg.success:before {
     background: green;
+}
+
+/* 아이디 중복 체크 */
+.id_input_re_1, .nick_input_re_1, .email_input_re_1{
+    color: green;
+    display: none;
+    font-size: 12px;
+}
+
+.id_input_re_2, .nick_input_re_2, .email_input_re_2{
+    color: red;
+    display: none;
+    font-size: 12px;
 }

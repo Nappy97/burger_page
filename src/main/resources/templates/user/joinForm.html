@@ -9,20 +9,21 @@
 </th:block>
 
 
-
-
 <div layout:fragment="content">
 
     <div id="form-container">
         <h2> 회원가입 </h2>
-        <form id="joinForm"  method="POST" action="/auth/user/saveProc">
+        <form id="joinForm" method="POST" action="/auth/user/saveProc">
             <div class="fieldset">
-                <label>아이디<span>*</span></label>
+                <label>아이디<span>*</span> </label>
                 <input type="text" class="input" placeholder="아이디" id="username"
                        name="username" title="아이디" required>
                 <div class='failure-message hide msg'>4자 이상의 영문 혹은 영문과 숫자를 조합</div>
                 <div class='success-message hide msg success'>사용할 수 있는 아이디입니다.</div>
+                <span class="id_input_re_1 msg success">사용 가능한 아이디입니다.</span>
+                <span class="id_input_re_2 msg">아이디가 이미 존재합니다.</span>
             </div>
+
 
             <div class="fieldset">
                 <label>비밀번호<span>*</span></label>
@@ -50,7 +51,9 @@
                 <input type="text" class="input" placeholder="닉네임" name="nickname" title="이름" id="nickname"
                        required>
                 <div class='nickF-message hide msg'>4자 이상의 글자와 숫자를 조합해주세요</div>
-                <div class='nickS-message hide msg success'>사용할 수 있는 닉네임입니다.</div>
+                <div class='nickS-message hide msg success'>가능한 닉네임입니다.</div>
+                <span class="nick_input_re_1 msg success">사용 가능한 닉네임입니다.</span>
+                <span class="nick_input_re_2 msg">닉네임이 이미 존재합니다.</span>
             </div>
 
             <div class="fieldset">
@@ -67,6 +70,8 @@
                        required>
                 <div class='emailF-message hide msg'>올바른 형식으로 입력해주세요</div>
                 <div class='emailS-message hide msg success'>사용가능한 이메일입니다.</div>
+                <span class="email_input_re_1 msg success">사용 가능한 이메일입니다.</span>
+                <span class="email_input_re_2 msg">이메일이 이미 존재합니다.</span>
             </div>
 
             <div class="fieldset">

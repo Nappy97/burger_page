@@ -4,18 +4,13 @@ import com.nappy.burger.config.auth.PrincipalDetail;
 import com.nappy.burger.domain.user.User;
 import com.nappy.burger.dto.user.UserDto;
 import com.nappy.burger.service.user.UserService;
-import com.nappy.burger.validator.CheckEmailValidator;
-import com.nappy.burger.validator.CheckNicknameValidator;
-import com.nappy.burger.validator.CheckUsernameValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,18 +24,6 @@ public class UserController {
 
     private final UserService userService;
 
-    /* 중복 체크 유효성 검사 */
-    private final CheckUsernameValidator checkUsernameValidator;
-    private final CheckNicknameValidator checkNicknameValidator;
-    private final CheckEmailValidator checkEmailValidator;
-
-    /* 커스텀 유효성 검증 */
-    @InitBinder
-    public void validatorBinder(WebDataBinder binder) {
-        binder.addValidators(checkUsernameValidator);
-        binder.addValidators(checkNicknameValidator);
-        binder.addValidators(checkEmailValidator);
-    }
 
     // 회원가입
     @GetMapping("/auth/user/save")
@@ -84,19 +67,22 @@ public class UserController {
     }
 
     /* 아이디, 닉네임, 이메일 중복 체크 */
-    @GetMapping("/auth/user/saveProc/{username}/exists")
-    public ResponseEntity<Boolean> checkUsernameDuplicate(@PathVariable String username){
-        return ResponseEntity.ok(userService.checkUsernameDuplication(username));
+    @RequestMapping(value = "/auth/user/saveProc/idCheck", method = RequestMethod.POST)
+    @ResponseBody
+    public String userIdChkPOST(String username) throws Exception {
+        return userService.idCheck(username);
     }
 
-    @GetMapping("/auth/user/saveProc/{nickname}/exists")
-    public ResponseEntity<Boolean> checkNicknameDuplicate(@PathVariable String nickname){
-        return ResponseEntity.ok(userService.checkNicknameDuplication(nickname));
+    @RequestMapping(value = "/auth/user/saveProc/nicknameCheck", method = RequestMethod.POST)
+    @ResponseBody
+    public String userNickChkPOST(String nickname) throws Exception {
+        return userService.nickCheck(nickname);
     }
 
-    @GetMapping("/auth/user/saveProc/{email}/exists")
-    public ResponseEntity<Boolean> checkEmailDuplicate(@PathVariable String email){
-        return ResponseEntity.ok(userService.checkEmailDuplication(email));
+    @RequestMapping(value = "/auth/user/saveProc/emailCheck", method = RequestMethod.POST)
+    @ResponseBody
+    public String userEmailChkPOST(String email) throws Exception {
+        return userService.emailCheck(email);
     }
 
     // 로그인

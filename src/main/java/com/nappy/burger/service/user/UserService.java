@@ -33,22 +33,34 @@ public class UserService {
 
     /* 아이디, 닉네임, 이메일 중복 여부 확인 */
     @Transactional(readOnly = true)
-    public boolean checkUsernameDuplication(String username) {
-        boolean usernameDuplicate = userRepository.existsByUsername(username);
-        return usernameDuplicate;
+    public String idCheck(String username) throws Exception {
+        boolean existsByUsername = userRepository.existsByUsername(username);
+        if (existsByUsername){
+            return "false";
+        } else {
+            return "true";
+        }
+
     }
 
     @Transactional(readOnly = true)
-    public boolean checkNicknameDuplication(String nickname) {
+    public String nickCheck(String nickname) throws Exception {
         boolean nicknameDuplicate = userRepository.existsByNickname(nickname);
-        return nicknameDuplicate;
-
+        if (nicknameDuplicate){
+            return "false";
+        } else {
+            return "true";
+        }
     }
 
     @Transactional(readOnly = true)
-    public boolean checkEmailDuplication(String email) {
+    public String emailCheck(String email) {
         boolean emailDuplicate = userRepository.existsByEmail(email);
-        return emailDuplicate;
+        if (emailDuplicate){
+            return "false";
+        } else {
+            return "true";
+        }
     }
 
 
