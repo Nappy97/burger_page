@@ -24,17 +24,17 @@
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img class="d-block w-100"
-                     src="${pageContext.request.contextPath}/images/burger/test1.jpg"
+                     src="/img/test1.jpg"
                      alt="First slide">
             </div>
             <div class="carousel-item">
                 <img class="d-block w-100"
-                     src="images/burger/test2.jpg"
+                     src="/img/test2.jpg"
                      alt="Second slide">
             </div>
             <div class="carousel-item">
                 <img class="d-block w-100"
-                     src="images/burger/test3.jpg"
+                     src="/img/test3.jpg"
                      alt="Third slide">
             </div>
         </div>
@@ -61,7 +61,7 @@
                         <img th:src="${burger.imgUrl}" class="card-img-top" th:alt="${burger.burgerName}" height="300">
                         <div class="card-body">
                             <h4 class="card-title">[[${burger.burgerName}]]</h4>
-                            <p class="card-text">[[${burger.burgerDetail}]]</p>
+                            <p class="card-text">[[${burger.burgerExplanation }]]</p>
                             <h3 class="card-title text-danger">[[${burger.price}]]원</h3>
                         </div>
                     </a>

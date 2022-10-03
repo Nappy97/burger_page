@@ -140,7 +140,7 @@
 
   <div class="d-flex">
     <div class="repImgDiv">
-      <img th:src="${burger.burgerImgDtoList[0].imgUrl}" class = "rounded repImg" th:alt="${burger.bugerName}">
+      <img th:src="${burger.burgerImgDtoList[0].imgUrl}" class = "rounded repImg" th:alt="${burger.burgerName}">
     </div>
     <div class="wd50">
       <span th:if="${burger.burgerSellStatus == T(com.nappy.burger.domain.burger.BurgerSellStatus).SELL}" class="badge badge-primary mgb-15">
@@ -185,7 +185,7 @@
     <div class="container">
       <h4 class="display-5">상품 상세 설명</h4>
       <hr class="my-4">
-      <p class="lead" th:text="${burger.burgerDetail}"></p>
+      <p class="lead" th:text="${burger.burgerExplanation}"></p>
     </div>
   </div>
   <div th:each="burgerImg : ${burger.burgerImgDtoList}" class="text-center">

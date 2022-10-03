@@ -239,6 +239,12 @@ $('#username').on("propertychange, change keyup paste input", function () {
 
     var username = $('#username').val();
     var data = {username: username}
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    $(document).ajaxSend(function(event, xhr, options){
+        xhr.setRequestHeader(header, token);
+    })
     $.ajax({
         type: "post",
         url: "/auth/user/saveProc/idCheck",
@@ -263,6 +269,13 @@ $('#nickname').on("propertychange, change keyup paste input", function () {
 
     var nickname = $('#nickname').val();
     var data = {nickname: nickname}
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    $(document).ajaxSend(function(event, xhr, options){
+        xhr.setRequestHeader(header, token);
+    })
+
     $.ajax({
         type: "post",
         url: "/auth/user/saveProc/nicknameCheck",
@@ -286,6 +299,14 @@ $('#nickname').on("propertychange, change keyup paste input", function () {
 $('#email').on("propertychange, change keyup paste input", function () {
     var email = $('#email').val();
     var data = {email: email}
+
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    $(document).ajaxSend(function(event, xhr, options){
+        xhr.setRequestHeader(header, token);
+    })
+
     $.ajax({
         type: "post",
         url: "/auth/user/saveProc/emailCheck",

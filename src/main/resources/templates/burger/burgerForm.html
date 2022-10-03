@@ -52,7 +52,7 @@
             상품 등록
         </p>
 
-        <input type="hidden" th:field="*{id}">
+<!--        <input type="hidden" th:field="*{id}">-->
 
         <div class="form-group">
             <select th:field="*{burgerSellStatus}" class="custom-select">
@@ -63,9 +63,9 @@
 
         <div class="input-group">
             <div class="input-group-prepend">
-                <span class="input-group-text">상품명</span>
+                <span class="input-group-text">버거 이름</span>
             </div>
-            <input type="text" th:field="*{burgerName}" class="form-control" placeholder="상품명을 입력해주세요">
+            <input type="text" th:field="*{burgerName}" class="form-control" placeholder="버거명을 입력해주세요">
         </div>
         <p th:if="${#fields.hasErrors('burgerName')}" th:errors="*{burgerName}" class="fieldError">Incorrect data</p>
 
@@ -92,6 +92,23 @@
             <textarea class="form-control" aria-label="With textarea" th:field="*{burgerExplanation}"></textarea>
         </div>
         <p th:if="${#fields.hasErrors('burgerExplanation')}" th:errors="*{burgerExplanation}" class="fieldError">Incorrect data</p>
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">버거 타입</span>
+            </div>
+            <textarea class="form-control" aria-label="With textarea" th:field="*{burgerType}"></textarea>
+        </div>
+        <p th:if="${#fields.hasErrors('burgerType')}" th:errors="*{burgerType}" class="fieldError">Incorrect data</p>
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">버거 내용물</span>
+            </div>
+            <textarea class="form-control" aria-label="With textarea" th:field="*{burgerContent}"></textarea>
+        </div>
+        <p th:if="${#fields.hasErrors('burgerContent')}" th:errors="*{burgerContent}" class="fieldError">Incorrect data</p>
+
 
         <div th:if="${#lists.isEmpty(burgerFormDto.burgerImgDtoList)}">
             <div class="form-group" th:each="num: ${#numbers.sequence(1,5)}">

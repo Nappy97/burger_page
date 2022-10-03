@@ -1,9 +1,11 @@
 package com.nappy.burger.config.oauth;
 
+import com.nappy.burger.config.auth.PrincipalDetail;
 import com.nappy.burger.config.oauth.provider.GoogleUserInfo;
 import com.nappy.burger.config.oauth.provider.KakaoUserInfo;
 import com.nappy.burger.config.oauth.provider.NaverUserInfo;
 import com.nappy.burger.config.oauth.provider.OAuth2UserInfo;
+import com.nappy.burger.domain.user.Role;
 import com.nappy.burger.domain.user.User;
 import com.nappy.burger.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -22,13 +25,18 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
 
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        return processOAuth2User(userRequest, oAuth2User);
+        try {
+            return processOAuth2User(userRequest, oAuth2User);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    private OAuth2User processOAuth2User(OAuth2UserRequest userRequest, OAuth2User oAuth2User) {
+    private OAuth2User processOAuth2User(OAuth2UserRequest userRequest, OAuth2User oAuth2User) throws Exception {
         OAuth2UserInfo oAuth2UserInfo = null;
 
 
@@ -44,26 +52,33 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         User user;
 
-//        if (userOptional.isPresent()) {
-//            user = userOptional.get();
-//            user.setEmail(oAuth2UserInfo.getEmail());
-//            userRepository.save(user);
-//        } else {
-//            user = User.builder()
-//                    .username(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
-//                    .password(UUID.randomUUID().toString())
-//                    .email(oAuth2UserInfo.getEmail())
-//                    .nickname(oAuth2UserInfo.getNickname())
-//                    .role(Role.USER)
-//                    .provider(oAuth2UserInfo.getProvider())
-//                    .providerId(oAuth2UserInfo.getProviderId())
-//                    .build();
-//
-//            userRepository.save(user);
-//        }
-//
-//        return new PrincipalDetail(user, oAuth2User.getAttributes());
-//
-    return null;
+        if (userOptional.isPresent()) {
+            user = userOptional.get();
+            user.setEmail(oAuth2UserInfo.getEmail());
+            userRepository.save(user);
+        } else {
+            user = User.builder()
+                    .username(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
+                    .password(UUID.randomUUID().toString())
+                    .email(oAuth2UserInfo.getEmail())
+                    .nickname(nickCheck(oAuth2UserInfo.getNickname()))
+                    .role(Role.USER)
+                    .provider(oAuth2UserInfo.getProvider())
+                    .providerId(oAuth2UserInfo.getProviderId())
+                    .build();
+
+            userRepository.save(user);
+        }
+
+        return new PrincipalDetail(user, oAuth2User.getAttributes());
+    }
+
+    public String nickCheck(String nickname) throws Exception {
+        boolean nicknameDuplicate = userRepository.existsByNickname(nickname);
+        if (nicknameDuplicate) {
+            return nickname + "_" + (Math.random() * 100);
+        } else {
+            return nickname;
+        }
     }
 }

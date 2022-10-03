@@ -5,6 +5,7 @@ import com.nappy.burger.dto.cart.CartListDto;
 import com.nappy.burger.dto.cart.CartOrderDto;
 import com.nappy.burger.service.cart.CartService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class CartController {
 
     private final CartService cartService;
@@ -28,7 +30,7 @@ public class CartController {
     @ResponseBody
     public ResponseEntity cart(@RequestBody @Valid CartBurgerDto cartBurgerDto,
                                BindingResult bindingResult, Principal principal) {
-
+    log.info("hi");
         if (bindingResult.hasErrors()) {
             StringBuilder sb = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -42,9 +44,13 @@ public class CartController {
 
         try {
             cartBurgerId = cartService.addCart(cartBurgerDto, principal.getName());
+            log.info(cartBurgerId.toString());
         } catch (Exception e) {
+            log.info("hi2");
             return new ResponseEntity<String>(e.getMessage(), HttpStatus.BAD_REQUEST);
+
         }
+        log.info("hi3");
         return new ResponseEntity<Long>(cartBurgerId, HttpStatus.OK);
     }
 
@@ -54,6 +60,7 @@ public class CartController {
 
         List<CartListDto> cartListDtos = cartService.getCartList(principal.getName());
         model.addAttribute("cartBurgers", cartListDtos);
+        log.info(cartListDtos.toString());
         return "cart/cartList";
     }
 

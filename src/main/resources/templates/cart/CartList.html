@@ -2,12 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/mainLayout}">
-
 <head>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
-
 <th:block layout:fragment="script">
     <script th:inline="javascript">
 
@@ -224,7 +222,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="cartBurger : ${cartBugers}">
+            <tr th:each="cartBurger : ${cartBurgers}">
                 <td class="text-center align-middle">
                     <input type="checkbox" name="cartChkBox" th:value="${cartBurger.cartBurgerId}">
                 </td>

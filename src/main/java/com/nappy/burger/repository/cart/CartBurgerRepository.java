@@ -17,7 +17,7 @@ public interface CartBurgerRepository extends JpaRepository<CartBurger, Long> {
             "join cb.burger b " +
             "where cb.cart.id = :cartId " +
             "and bi.burger.id = cb.burger.id " +
-            "and bi.repimgYn = 'Y' " +
+            "and bi.repimgYn = 'Y'" +
             "order by cb.regTime desc ")
     List<CartListDto> findCartListDto(@Param("cartId") Long cartId);
 }

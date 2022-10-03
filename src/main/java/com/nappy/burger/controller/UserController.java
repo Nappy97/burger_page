@@ -70,7 +70,12 @@ public class UserController {
     @RequestMapping(value = "/auth/user/saveProc/idCheck", method = RequestMethod.POST)
     @ResponseBody
     public String userIdChkPOST(String username) throws Exception {
-        return userService.idCheck(username);
+        boolean checkId = userService.idCheck(username);
+        if (checkId) {
+            return "false";
+        } else {
+            return "true";
+        }
     }
 
     @RequestMapping(value = "/auth/user/saveProc/nicknameCheck", method = RequestMethod.POST)

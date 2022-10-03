@@ -33,14 +33,8 @@ public class UserService {
 
     /* 아이디, 닉네임, 이메일 중복 여부 확인 */
     @Transactional(readOnly = true)
-    public String idCheck(String username) throws Exception {
-        boolean existsByUsername = userRepository.existsByUsername(username);
-        if (existsByUsername){
-            return "false";
-        } else {
-            return "true";
-        }
-
+    public boolean idCheck(String username) throws Exception {
+        return userRepository.existsByUsername(username);
     }
 
     @Transactional(readOnly = true)

@@ -48,6 +48,13 @@ public class BurgerController {
             model.addAttribute("errorMessage", "첫번째 이미지는 필수!");
             return "burger/burgerForm";
         }
+
+        try{
+            burgerService.saveBurger(burgerFormDto, burgerImgFileList);
+        } catch (Exception e){
+            model.addAttribute("errorMessage", "상품등록중 에러발생");
+            return "burger/burgerForm";
+        }
         return "redirect:/";
     }
 
@@ -55,6 +62,7 @@ public class BurgerController {
     @GetMapping(value = {"/admin/burgers", "/admin/burgers/{page}"})
     public String burgerManage(BurgerSearchDto burgerSearchDto,
                                @PathVariable(name = "page") Optional<Integer> page, Model model) {
+
         // PageRequest.of() 메소드를 통해 Pageable 객체 생성
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
         Page<Burger> burgers = burgerService.getAdminBrugerPage(burgerSearchDto, pageable);
@@ -96,7 +104,7 @@ public class BurgerController {
     }
 
     // 디테일 페이지
-    @GetMapping(value = "/burgert/{burgerId}")
+    @GetMapping(value = "/burger/{burgerId}")
     public String burgerDetail(Model model, @PathVariable("burgerId") Long burgerId){
         BurgerFormDto burgerFormDto = burgerService.getBurgerDetail(burgerId);
         model.addAttribute("burger", burgerFormDto);

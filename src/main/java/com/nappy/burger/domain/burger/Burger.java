@@ -3,9 +3,7 @@ package com.nappy.burger.domain.burger;
 import com.nappy.burger.domain.BaseEntity;
 import com.nappy.burger.dto.burger.BurgerFormDto;
 import com.nappy.burger.exception.OutOfStockException;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -14,7 +12,10 @@ import javax.persistence.*;
 @Entity
 @ToString
 @Setter
-@Table(name = "item")
+@Table(name = "burger")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Burger extends BaseEntity {
 
     @Id

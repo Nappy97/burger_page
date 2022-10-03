@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 @RequiredArgsConstructor
@@ -26,9 +27,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+
                 .authorizeRequests()
-                .antMatchers("/", "/auth/**", "/js/**", "/css/**", "/images/**", "/fonts/**").permitAll()
+                .antMatchers("/", "/auth/**", "/js/**", "/css/**", "/images/**", "/fonts/**", "/img/**").permitAll()
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
@@ -39,6 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/auth/api/v1/user/login")
                 .defaultSuccessUrl("/")
                 .and()
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/auth/user/logout"))
+                .logoutSuccessUrl("/")
+                .and()
                 .oauth2Login()
                 .loginPage("/auth/user/login")
                 .userInfoEndpoint()
@@ -47,6 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .rememberMe().tokenValiditySeconds(60 * 60 * 7)
                 .userDetailsService(principalDetailService);
+
+        http .csrf();
     }
 
     /**

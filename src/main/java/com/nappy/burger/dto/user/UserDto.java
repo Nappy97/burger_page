@@ -7,7 +7,6 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 public class UserDto {
@@ -33,19 +32,15 @@ public class UserDto {
         private String email;
 
         @NotBlank(message = "닉네임은 필수 입력 값입니다")
-        @Length(min = 4, message = "닉네임은 4자 이상 입력해주세요")
+        @Length(min = 2, message = "닉네임은 2자 이상 입력해주세요")
         private String nickname;
 
-        @NotNull(message = "우편번호를 입력해주세요")
         private int zipcode;
 
-        @NotBlank(message = "이름은 필수 입력 값입니다")
         private String name;
 
-        @NotBlank(message = "주소는 필수 입력 값입니다")
         private String address;
 
-        @NotBlank(message = "상세주소는 필수 입력 값입니다")
         private String detailAddress;
 
         private Role role;
@@ -65,7 +60,7 @@ public class UserDto {
                     .address(address)
                     .detailAddress(detailAddress)
                     .name(name)
-                    .role(Role.ADMIN)
+                    .role(Role.USER)
                     .build();
             return user;
         }

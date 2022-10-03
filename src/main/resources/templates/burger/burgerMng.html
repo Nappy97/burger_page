@@ -73,7 +73,7 @@
                     </a>
                 </li>
                 <!--페이지 요소들-->
-                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${bugers.number eq page-1}?'active':''">
+                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${burgers.number eq page-1}?'active':''">
                     <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" class="page-link" style="cursor : pointer;">[[${page}]]</a>
                 </li>
                 <!--Next 다음 버튼-->
@@ -99,7 +99,7 @@
                 <option value="SOLD_OUT">품절</option>
             </select>
             <select th:field="*{searchBy}" class="form-control" style="width:auto;">
-                <option value="itemName">상품명</option>
+                <option value="burgerName">상품명</option>
                 <option value="createdBy">등록자</option>
             </select>
             <input th:field="*{searchQuery}" type="text" class="form-control" placeholder="검색어를 입력해주세요">

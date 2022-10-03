@@ -33,7 +33,7 @@ public class BurgerImgService {
         // 파일업로드
         if (!StringUtils.isEmpty(oriImgName)) {
             imgName = fileService.uploadFile(burgerImgLocation, oriImgName, burgerImgFile.getBytes());
-            imgUrl = "/images/item/" + imgName;
+            imgUrl = "/images/burger/" + imgName;
         }
 
         // 상품 이미지 정보저장
@@ -55,7 +55,7 @@ public class BurgerImgService {
 
             String oriImgName = burgerImgFile.getOriginalFilename();
             String imgName = fileService.uploadFile(burgerImgLocation, oriImgName, burgerImgFile.getBytes());
-            String imgUrl = "/images/item" + imgName;
+            String imgUrl = "/images/burger" + imgName;
             savedBurgerImg.updateBurgerImg(oriImgName, imgName, imgUrl);
         }
     }
