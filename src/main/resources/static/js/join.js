@@ -242,7 +242,7 @@ $('#username').on("propertychange, change keyup paste input", function () {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
 
-    $(document).ajaxSend(function(event, xhr, options){
+    $(document).ajaxSend(function (event, xhr, options) {
         xhr.setRequestHeader(header, token);
     })
     $.ajax({
@@ -272,7 +272,7 @@ $('#nickname').on("propertychange, change keyup paste input", function () {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
 
-    $(document).ajaxSend(function(event, xhr, options){
+    $(document).ajaxSend(function (event, xhr, options) {
         xhr.setRequestHeader(header, token);
     })
 
@@ -303,7 +303,7 @@ $('#email').on("propertychange, change keyup paste input", function () {
     var token = $("meta[name='_csrf']").attr("content");
     var header = $("meta[name='_csrf_header']").attr("content");
 
-    $(document).ajaxSend(function(event, xhr, options){
+    $(document).ajaxSend(function (event, xhr, options) {
         xhr.setRequestHeader(header, token);
     })
 
@@ -325,6 +325,50 @@ $('#email').on("propertychange, change keyup paste input", function () {
         }
     });
 });
+
+function execPostCode() {
+    new daum.Postcode({
+        oncomplete: function (data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+            // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+            var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+            var extraRoadAddr = ''; // 도로명 조합형 주소 변수
+
+            // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+            // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+            if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                extraRoadAddr += data.bname;
+            }
+            // 건물명이 있고, 공동주택일 경우 추가한다.
+            if (data.buildingName !== '' && data.apartment === 'Y') {
+                extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+            if (extraRoadAddr !== '') {
+                extraRoadAddr = ' (' + extraRoadAddr + ')';
+            }
+            // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+            if (fullRoadAddr !== '') {
+                fullRoadAddr += extraRoadAddr;
+            }
+
+            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+            console.log(data.zonecode);
+            console.log(fullRoadAddr);
+
+
+            $("[name=zipcode]").val(data.zonecode);
+            $("[name=address]").val(fullRoadAddr);
+
+            document.getElementById('zipcode').value = data.zonecode; //5자리 새우편번호 사용
+            document.getElementById('address').value = fullRoadAddr;
+            // document.getElementById('signUpUserCompanyAddressDetail').value = data.jibunAddress;
+        }
+    }).open();
+}
+
 //-------- 최종 유효성 검사에서 사용하는 함수 ---------//
 
 // 모든 조건이 충족되었는지 확인하는 함수
@@ -437,9 +481,9 @@ function nullChk(value) {
 
 // [아이디] 길이가 4자 이상이면 true를 리턴하는 함수
 function isMoreThan4Length(value) {
-    // 아이디 입력창에 사용자가 입력을 할 때
-    // 글자 수가 4개이상인지 판단한다.
-    // 글자가 4개 이상이면 success메세지가 보여야 한다.
+// 아이디 입력창에 사용자가 입력을 할 때
+// 글자 수가 4개이상인지 판단한다.
+// 글자가 4개 이상이면 success메세지가 보여야 한다.
     return value.length >= 4;
 }
 
@@ -506,19 +550,19 @@ function isPasswordChar(password) {
     var letters = /^[A-Za-z0-9~!@#$%^&*()\-_=+\\\|\[\]{};:\'",.<>\/?]+$/;
 
     if (password.match(letters)) {
-        //console.log('가능한 것만 있네!');
+//console.log('가능한 것만 있네!');
         return true;
     } else {
-        //console.log('안되는 것도 있네?');
+//console.log('안되는 것도 있네?');
         return false;
     }
 }
 
 // [비밀번호] 동일한 숫자 3개 이상 연속 사용하면 true를 리턴하는 함수
 function isPasswordRepeat(password) {
-    // password의 길이만큼 반복되는 반복문이 있어야 한다.
-    // 문자 하나와 나 자신+1과 나자신 +2와 비교한다.
-    // 숫자인지 아닌지 판단한다.숫자이면 true 아니면 false
+// password의 길이만큼 반복되는 반복문이 있어야 한다.
+// 문자 하나와 나 자신+1과 나자신 +2와 비교한다.
+// 숫자인지 아닌지 판단한다.숫자이면 true 아니면 false
     for (let i = 0; i < password.length - 2; i++) {
         if (password[i] === password[i + 1] && password[i] === password[i + 2]) {
             if (!isNaN(Number(password[i]))) {
