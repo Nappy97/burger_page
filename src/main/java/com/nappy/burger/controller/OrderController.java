@@ -26,6 +26,13 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    // 주문 체크]
+    @GetMapping("orderCheck")
+    public String orderCheck(){
+        return "order/orderCheck";
+    }
+
+
     // 단일 상품 주문
     @PostMapping(value = "/order")
     @ResponseBody
@@ -49,6 +56,9 @@ public class OrderController {
         }
         return new ResponseEntity<Long>(orderId, HttpStatus.OK);
     }
+
+
+
 
     // 주문 내역 조회
     @GetMapping(value = {"/orders", "/orders/{page}"})

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+<th:block layout:fragment="css">
+
+</th:block>
+
+<div layout:fragment="content">
+<h2>주문하기</h2>
+    <form action="/order" method="post">
+        <h3>주문자 정보</h3>
+        <span>주소</span>
+        <input type="text" th:value="${#authentication.principal.address}" readonly>
+        <input type="text" th:value="${#authentication.principal.detailAddress}" readonly>
+    </form>
+</div>
+</html>

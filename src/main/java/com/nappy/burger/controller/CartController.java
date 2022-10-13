@@ -92,6 +92,11 @@ public class CartController {
     }
 
     // 장바구니 상품을 주문
+    @GetMapping("/cart/orderChk")
+    public String orderChk(){
+        return "cart/orderChk";
+    }
+
     @PostMapping(value = "/cart/orders")
     @ResponseBody
     public ResponseEntity orders(@RequestBody CartOrderDto cartOrderDto, Principal principal) {
