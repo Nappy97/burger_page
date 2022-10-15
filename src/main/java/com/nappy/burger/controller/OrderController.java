@@ -1,7 +1,9 @@
 package com.nappy.burger.controller;
 
+import com.nappy.burger.dto.burger.BurgerFormDto;
 import com.nappy.burger.dto.order.OrderDto;
 import com.nappy.burger.dto.order.OrderHistDto;
+import com.nappy.burger.service.burger.BurgerService;
 import com.nappy.burger.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,9 +28,13 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    private final BurgerService burgerService;
+
     // 주문 체크]
-    @GetMapping("orderCheck")
-    public String orderCheck(){
+    @GetMapping("orderCheck/{burgerId}")
+    public String orderCheck(Model model, @PathVariable("burgerId") Long burgerId){
+        BurgerFormDto burgerFormDto = burgerService.getBurgerDetail(burgerId);
+        model.addAttribute("burger", burgerFormDto);
         return "order/orderCheck";
     }
 
