@@ -116,4 +116,5 @@ public class UserController {
         userService.updateUser(user, principalDetail);
         return user.getId();
     }
+
 }

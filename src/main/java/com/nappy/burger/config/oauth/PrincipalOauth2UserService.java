@@ -63,6 +63,10 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .email(oAuth2UserInfo.getEmail())
                     .nickname(nickCheck(oAuth2UserInfo.getNickname()))
                     .role(Role.USER)
+
+                    .address("test1")
+                    .detailAddress("test2")
+                    .name("test"+(Math.random()*100))
                     .provider(oAuth2UserInfo.getProvider())
                     .providerId(oAuth2UserInfo.getProviderId())
                     .build();
