@@ -26,6 +26,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
     private final UserRepository userRepository;
 
 
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
@@ -61,12 +62,12 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                     .username(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
                     .password(UUID.randomUUID().toString())
                     .email(oAuth2UserInfo.getEmail())
-                    .nickname(nickCheck(oAuth2UserInfo.getNickname()))
+                    .nickname(oAuth2UserInfo.getNickname() + "_" + (int) (Math.random() * 100))
                     .role(Role.USER)
-
-                    .address("test1")
-                    .detailAddress("test2")
-                    .name("test"+(Math.random()*100))
+                    .zipcode(1)
+                    .address("주소를 입력해주세요")
+                    .detailAddress("상세주소를 입력해주세요")
+                    .name("이름을 입력해주세요")
                     .provider(oAuth2UserInfo.getProvider())
                     .providerId(oAuth2UserInfo.getProviderId())
                     .build();
@@ -77,12 +78,4 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         return new PrincipalDetail(user, oAuth2User.getAttributes());
     }
 
-    public String nickCheck(String nickname) throws Exception {
-        boolean nicknameDuplicate = userRepository.existsByNickname(nickname);
-        if (nicknameDuplicate) {
-            return nickname + "_" + (Math.random() * 100);
-        } else {
-            return nickname;
-        }
-    }
 }

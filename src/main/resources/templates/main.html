@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       layout:decorate="~{layouts/mainLayout}"
 >
 
@@ -57,8 +58,9 @@
         <th:block th:each="burger, status: ${burgers.getContent()}">
             <div class="col-md-4 margin">
                 <div class="card">
-                    <a th:href="'/burger/' +${burger.id}" class="text-dark">
-                        <img th:src="${burger.imgUrl}" class="card-img-top" th:alt="${burger.burgerName}" height="300">
+                    <a th:href="'/burger/' + ${burger.id}" class="text-dark">
+                        <img th:src="${burger.imgUrl}" class="card-img-top" th:alt="${burger.burgerName}"
+                             height="300">
                         <div class="card-body">
                             <h4 class="card-title">[[${burger.burgerName}]]</h4>
                             <p class="card-text">[[${burger.burgerExplanation }]]</p>

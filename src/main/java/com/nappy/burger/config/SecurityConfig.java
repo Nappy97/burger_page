@@ -33,7 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-
                 .formLogin()
                 .loginPage("/auth/user/login")
                 .failureUrl("/auth/user/login/fail")

@@ -11,62 +11,99 @@
 </th:block>
 
 <div layout:fragment="content">
-    <main class="form-signin">
-        <div class="container border rounded flex-md-row mb-4 shadow-sm h-md-250">
-            <form id="needs-validation" novalidate>
-                <h1 class="h3 m-3 fw-normal">회원가입</h1>
-                <input type="hidden" id="id" th:value="${#authentication.principal.id}">
-                <div class="form-floating m-3">
-                    <input type="text" th:value="${#authentication.principal.username}" class="form-control"
-                           id="username" placeholder="아이디를 입력하세요." required
-                           minlength="4" size="20" readonly>
-                    <label for="username">아이디</label>
-                    <div class="valid-feedback">
-                        good!
-                    </div>
-                    <div class="invalid-feedback">
-                        아이디는 4자 이상 입력해야 합니다.
-                    </div>
-                </div>
+    <div id="form-container">
+        <h2>회원 수정</h2>
+        <form id="joinForm">
+            <input type="hidden" id="id" th:value="${#authentication.principal.id}">
+            <div class="fieldset">
+                <label>아이디<span>*</span> </label>
+                <input type="text" class="input" placeholder="아이디" id="username"
+                       name="username" title="아이디" th:value="${#authentication.principal.username}" required readonly>
+                <div class='failure-message hide msg'>4자 이상의 영문 혹은 영문과 숫자를 조합</div>
+                <div class='success-message hide msg success'>사용할 수 있는 아이디입니다.</div>
+            </div>
 
-                <div class="form-floating m-3">
-                    <input type="password" class="form-control" id="password" placeholder="패스워드를 입력하세요." required
-                           minlength="8" size="20"
-                           th:attrappend="disabled=${principal.provider ==  null} ? '' : 'disabled'">
-                    <label for="password">패스워드</label>
-                    <div class="valid-feedback">
-                        very good!
-                    </div>
-                    <div class="invalid-feedback">
-                        패스워드는 8자 이상 입력해야 합니다.
-                    </div>
+
+            <div class="fieldset">
+                <label>비밀번호<span>*</span></label>
+                <input type="password" placeholder="비밀번호" name="password" title="비밀번호" id="password"
+                       th:attrappend="disabled=${principal.provider ==  null} ? '' : 'disabled'" required>
+                <div class='password-message-wrap'>
+                    <span class='password-failure-length hide msg'>10자 이상 입력</span>
+                    <span class='password-failure-comb hide msg'>영문/숫자/특수문자(공백 제외)만 허용하며, 2개 이상 조합</span>
+                    <span class='password-failure-contn hide msg'>동일한 숫자 3개 이상 연속 사용 불가</span>
+                    <span class='password-failure-upper hide msg'>영어 대문자 하나 이상 포함</span>
+                    <span class='password-success-message hide msg success'>사용할 수 있는 비밀번호입니다.</span>
                 </div>
-                <div class="form-floating m-3">
-                    <input type="email" th:value="${#authentication.principal.email}" class="form-control" id="email"
-                           placeholder="이메일을 입력하세요." required readonly>
-                    <label for="email">이메일</label>
-                    <div class="valid-feedback">
-                        nice!
-                    </div>
-                    <div class="invalid-feedback">
-                        이메일 형식으로 입력해야 합니다.
-                    </div>
-                </div>
-                <div class="form-floating m-3">
-                    <input type="text" th:value="${#authentication.principal.nickname}" class="form-control"
-                           id="nickname" placeholder="닉네임을 입력하세요." required
-                           minlength="2" size="20">
-                    <label for="nickname">닉네임</label>
-                    <div class="valid-feedback">
-                        very nice!
-                    </div>
-                    <div class="invalid-feedback">
-                        닉네임은 2자 이상 입력해야 합니다.
-                    </div>
-                </div>
-            </form>
-            <button class="w-100 btn btn-lg btn-success" id="btn-update">회원수정</button>
-        </div>
-    </main>
+            </div>
+
+            <div class="fieldset">
+                <label>비밀번호 확인<span>*</span></label>
+                <input type="password" placeholder="비밀번호체크" name="re_password" title="비밀번호체크"
+                       id="re_password" required>
+                <div class="mismatch-message hide msg">동일한 비밀번호를 입력해주세요.</div>
+                <div class="match-message hide msg success">동일한 비밀번호가 입력되었습니다.</div>
+            </div>
+
+            <div class="fieldset">
+                <label>닉네임<span>*</span></label>
+                <input type="text" class="input" placeholder="닉네임" name="nickname" title="이름" id="nickname"
+                       th:value="${#authentication.principal.nickname}" required>
+                <div class='nickF-message hide msg'>4자 이상의 글자와 숫자를 조합해주세요</div>
+                <div class='nickS-message hide msg success'>가능한 닉네임입니다.</div>
+            </div>
+
+            <div class="fieldset">
+                <label>이름<span>*</span></label>
+                <input type="text" class="input" placeholder="이름" name="name" title="이름" id="name"
+                       value="${REDIRECT_ATTR.name}" th:value="${#authentication.principal.name}" required>
+                <div class="illegible-message hide msg">한글만 입력해주세요</div>
+                <div class="readable-message hide msg success">한글만 입력되었습니다!</div>
+            </div>
+
+            <div class="fieldset">
+                <label>이메일<span>*</span></label>
+                <input type="text" class="input" placeholder="이메일" name="email" title="이메일" id="email"
+                       th:value="${#authentication.principal.email}" required>
+                <div class='emailF-message hide msg'>올바른 형식으로 입력해주세요</div>
+                <div class='emailS-message hide msg success'>사용가능한 이메일입니다.</div>
+            </div>
+
+            <div class="fieldset">
+                <label>우편번호<span>*</span></label>
+                <input type="text" class="input" placeholder="우편번호" name="zipcode" title="우편번호" id="zipcode"
+                       style="width: 40%; display: inline;" th:value="${#authentication.principal.zipcode}" required
+                       readonly>
+                <button type="button" class="btn btn-default" onclick="execPostCode();">
+                    <i class="fa fa-search"></i> 우편번호 찾기
+                </button>
+                <div class="zipcodeF-message hide msg">공백입니다.</div>
+                <div class="zipcodeS-message hide msg success">입력되었습니다!</div>
+            </div>
+
+            <div class="fieldset">
+                <label>주소<span>*</span></label>
+                <input type="text" class="input" placeholder="주소" name="address" title="주소" id="address"
+                       th:value="${#authentication.principal.address}" required readonly>
+                <div class="addressF-message hide msg">공백입니다.</div>
+                <div class="addressS-message hide msg success">입력되었습니다!</div>
+            </div>
+
+            <div class="fieldset">
+                <label>상세주소<span>*</span></label>
+                <input type="text" class="input" placeholder="상세주소" name="detailAddress" title="상세주소"
+                       id="detailAddress" th:value="${#authentication.principal.detailAddress}" required>
+                <div class="dAddressF-message hide msg">공백입니다.</div>
+                <div class="dAddressS-message hide msg success">입력되었습니다!</div>
+            </div>
+            <button id="subit-button" type="submit" value="회원수정"> 회원 수정</button>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        </form>
+    </div>
+    <script type="text/javascript" src="/js/modify.js"></script>
 </div>
+<th:block layout:fragment="script">
+    <script src="https://kit.fontawesome.com/e1bd1cb2a5.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</th:block>
 </html>
