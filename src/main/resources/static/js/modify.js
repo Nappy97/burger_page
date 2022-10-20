@@ -49,6 +49,8 @@ const dAddressSMessage = document.querySelector('.dAddressS-message');
 
 const elSubmitButton = document.querySelector('#subit-button');
 
+let nickChk = null;
+let emailChk = null;
 
 //-------- 유효성 검사 ---------//
 
@@ -272,6 +274,102 @@ function execPostCode() {
     }).open();
 }
 
+$('#nickname').on("propertychange, change keyup paste input", function () {
+
+    var id = $('#id').val();
+    var nickname = $('#nickname').val();
+    var data = {nickname: nickname}
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    $(document).ajaxSend(function (event, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    })
+
+    $.ajax({
+        type: "post",
+        url: "/auth/user/saveProc/nicknameCheck",
+        data: data,
+        success: function (resultNick) {
+            console.log("성공 여부 " + resultNick);
+            if (resultNick == "true") {
+                $('.nick_input_re_1').css("display", "inline-block");
+                $('.nick_input_re_2').css("display", "none");
+                $('.nick_input_re_3').css("display", "none");
+                nickChk = "true";
+            } else {
+                var data1 = {id: id, nickname: nickname};
+                $.ajax({
+                    type: "post",
+                    url: "/auth/user/modifyProc/nicknameCheck",
+                    data: data1,
+                    success: function (resultNickCheck) {
+                        if (resultNickCheck == "true") {
+                            $('.nick_input_re_3').css("display", "inline-block");
+                            $('.nick_input_re_2').css("display", "none");
+                            $('.nick_input_re_1').css("display", "none");
+                            nickChk = "true";
+                        } else{
+                            $('.nick_input_re_2').css("display", "inline-block");
+                            $('.nick_input_re_1').css("display", "none");
+                            $('.nick_input_re_3').css("display", "none");
+                            nickChk = "false";
+                        }
+                    }
+                })
+            }
+        }
+    });
+});
+
+$('#email').on("propertychange, change keyup paste input", function () {
+
+    var id = $('#id').val();
+    var email = $('#email').val();
+    var data = {email: email}
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+
+    $(document).ajaxSend(function (event, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    })
+
+    $.ajax({
+        type: "post",
+        url: "/auth/user/saveProc/emailCheck",
+        data: data,
+        success: function (resultEmail) {
+            console.log("성공 여부 " + resultEmail);
+            if (resultEmail == "true") {
+                $('.email_input_re_1').css("display", "inline-block");
+                $('.email_input_re_2').css("display", "none");
+                $('.email_input_re_3').css("display", "none");
+                emailChk = "true";
+            } else{
+                var data1 = {id: id, email: email};
+                $.ajax({
+                    type: "post",
+                    url: "/auth/user/modifyProc/emailCheck",
+                    data: data1,
+                    success: function (resultEmailCheck) {
+                        if (resultEmailCheck == "true") {
+                            $('.email_input_re_3').css("display", "inline-block");
+                            $('.email_input_re_2').css("display", "none");
+                            $('.email_input_re_1').css("display", "none");
+                            emailChk = "true";
+                        } else{
+                            $('.email_input_re_2').css("display", "inline-block");
+                            $('.email_input_re_1').css("display", "none");
+                            $('.email_input_re_3').css("display", "none");
+                            emailChk = "false";
+                        }
+                    }
+                })
+            }
+        }
+    });
+});
+
 //-------- 최종 유효성 검사에서 사용하는 함수 ---------//
 
 // 모든 조건이 충족되었는지 확인하는 함수
@@ -293,8 +391,14 @@ function isAllCheck() {
                             if (nullChk(zipcode.value)) {
                                 if (nullChk(address.value)) {
                                     if (nullChk(detailAddress.value)) {
-                                        console.log("validationend");
-                                        return true;
+                                        if(nickChk === "true"){
+                                            if (emailChk === "true"){
+                                                console.log("validationend");
+                                                return true;
+                                            } else {
+                                                console.log("emailerr'")
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -420,7 +524,6 @@ let index = {
     }
 }
 index.init();
-
 
 
 //-------- 유효성 검사에서 사용하는 함수다 ---------//

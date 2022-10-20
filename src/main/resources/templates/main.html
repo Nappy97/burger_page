@@ -57,46 +57,75 @@
     <div class="row">
         <th:block th:each="burger, status: ${burgers.getContent()}">
             <div class="col-md-4 margin">
-                <div class="card">
-                    <a th:href="'/burger/' + ${burger.id}" class="text-dark">
-                        <img th:src="${burger.imgUrl}" class="card-img-top" th:alt="${burger.burgerName}"
-                             height="300">
-                        <div class="card-body">
-                            <h4 class="card-title">[[${burger.burgerName}]]</h4>
-                            <p class="card-text">[[${burger.burgerExplanation }]]</p>
-                            <h3 class="card-title text-danger">[[${burger.price}]]원</h3>
+                <th:block th:if="${principal == 0 }">
+                    <div class="card">
+                        <a th:href="'/burger/' + ${burger.id}" class="text-dark">
+                            <img th:src="${burger.imgUrl}" class="card-img-top" th:alt="${burger.burgerName}"
+                                 height="300">
+                            <div class="card-body">
+                                <h4 class="card-title">[[${burger.burgerName}]]</h4>
+                                <p class="card-text">[[${burger.burgerExplanation }]]</p>
+                                <h3 class="card-title text-danger">[[${burger.price}]]원</h3>
+                            </div>
+                        </a>
+                    </div>
+                </th:block>
+                <th:block th:if="!${principal == 0}">
+                    <th:block th:switch="${principal.zipcode}">
+                        <div class="card" th:case="1">
+                            <a href="/user/update" class="text-dark">
+                                <img th:src="${burger.imgUrl}" class="card-img-top" th:alt="${burger.burgerName}"
+                                     height="300">
+                                <div class="card-body">
+                                    <h4 class="card-title">[[${burger.burgerName}]]</h4>
+                                    <p class="card-text">[[${burger.burgerExplanation }]]</p>
+                                    <h3 class="card-title text-danger">[[${burger.price}]]원</h3>
+                                </div>
+                            </a>
                         </div>
-                    </a>
-                </div>
+                        <div class="card" th:case="*">
+                            <a th:href="'/burger/' + ${burger.id}" class="text-dark">
+                                <img th:src="${burger.imgUrl}" class="card-img-top" th:alt="${burger.burgerName}"
+                                     height="300">
+                                <div class="card-body">
+                                    <h4 class="card-title">[[${burger.burgerName}]]</h4>
+                                    <p class="card-text">[[${burger.burgerExplanation }]]</p>
+                                    <h3 class="card-title text-danger">[[${burger.price}]]원</h3>
+                                </div>
+                            </a>
+                        </div>
+                    </th:block>
+                </th:block>
             </div>
         </th:block>
     </div>
+</div>
 
-    <div th:with="start=${(burgers.number/maxPage)*maxPage + 1}, end=(${(burgers.totalPages == 0) ? 1 : (start + (maxPage - 1) < burgers.totalPages ? start + (maxPage - 1) : burgers.totalPages)})">
-        <ul class="pagination justify-content-center">
+<div th:with="start=${(burgers.number/maxPage)*maxPage + 1}, end=(${(burgers.totalPages == 0) ? 1 : (start + (maxPage - 1) < burgers.totalPages ? start + (maxPage - 1) : burgers.totalPages)})">
+    <ul class="pagination justify-content-center">
 
-            <li class="page-item" th:classappend="${burgers.number eq 0}?'disabled':''">
-                <a th:href="@{'/' + '?searchQuery=' + ${burgerSearchDto.searchQuery} + '&page=' + ${burgers.number-1}}"
-                   aria-label='Previous' class="page-link">
-                    <span aria-hidden='true'>Previous</span>
-                </a>
-            </li>
+        <li class="page-item" th:classappend="${burgers.number eq 0}?'disabled':''">
+            <a th:href="@{'/' + '?searchQuery=' + ${burgerSearchDto.searchQuery} + '&page=' + ${burgers.number-1}}"
+               aria-label='Previous' class="page-link">
+                <span aria-hidden='true'>Previous</span>
+            </a>
+        </li>
 
-            <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}"
-                th:classappend="${burgers.number eq page-1}?'active':''">
-                <a th:href="@{'/' +'?searchQuery=' + ${burgerSearchDto.searchQuery} + '&page=' + ${page-1}}"
-                   th:inline="text" class="page-link">[[${page}]]</a>
-            </li>
+        <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}"
+            th:classappend="${burgers.number eq page-1}?'active':''">
+            <a th:href="@{'/' +'?searchQuery=' + ${burgerSearchDto.searchQuery} + '&page=' + ${page-1}}"
+               th:inline="text" class="page-link">[[${page}]]</a>
+        </li>
 
-            <li class="page-item" th:classappend="${burgers.number+1 ge burgers.totalPages}?'disabled':''">
-                <a th:href="@{'/' +'?searchQuery=' + ${burgerSearchDto.searchQuery} + '&page=' + ${burgers.number+1}}"
-                   aria-label='Next' class="page-link">
-                    <span aria-hidden='true'>Next</span>
-                </a>
-            </li>
+        <li class="page-item" th:classappend="${burgers.number+1 ge burgers.totalPages}?'disabled':''">
+            <a th:href="@{'/' +'?searchQuery=' + ${burgerSearchDto.searchQuery} + '&page=' + ${burgers.number+1}}"
+               aria-label='Next' class="page-link">
+                <span aria-hidden='true'>Next</span>
+            </a>
+        </li>
 
-        </ul>
-    </div>
+    </ul>
+</div>
 
 </div>
 </html>

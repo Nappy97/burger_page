@@ -61,7 +61,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
             user = User.builder()
                     .username(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
                     .password(UUID.randomUUID().toString())
-                    .email(oAuth2UserInfo.getEmail())
+                    .email(oAuth2UserInfo.getEmail() + oAuth2UserInfo.getProvider())
                     .nickname(oAuth2UserInfo.getNickname() + "_" + (int) (Math.random() * 100))
                     .role(Role.USER)
                     .zipcode(1)

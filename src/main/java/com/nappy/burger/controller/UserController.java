@@ -66,7 +66,7 @@ public class UserController {
         return "redirect:/auth/user/login";
     }
 
-    /* 아이디, 닉네임, 이메일 중복 체크 */
+    // 아이디 중복체크
     @RequestMapping(value = "/auth/user/saveProc/idCheck", method = RequestMethod.POST)
     @ResponseBody
     public String userIdChkPOST(String username) throws Exception {
@@ -78,16 +78,30 @@ public class UserController {
         }
     }
 
+    // 닉네임 중복체크
     @RequestMapping(value = "/auth/user/saveProc/nicknameCheck", method = RequestMethod.POST)
     @ResponseBody
     public String userNickChkPOST(String nickname) throws Exception {
         return userService.nickCheck(nickname);
     }
 
+    @RequestMapping(value = "/auth/user/modifyProc/nicknameCheck", method = RequestMethod.POST)
+    @ResponseBody
+    public String userNickCheckPost(String nickname, Long id) throws Exception{
+        return userService.nickCheck2(id, nickname);
+    }
+
+    // 이메일 중복체크
     @RequestMapping(value = "/auth/user/saveProc/emailCheck", method = RequestMethod.POST)
     @ResponseBody
     public String userEmailChkPOST(String email) throws Exception {
         return userService.emailCheck(email);
+    }
+
+    @RequestMapping(value = "/auth/user/modifyProc/emailCheck", method = RequestMethod.POST)
+    @ResponseBody
+    public String userEmailCheckPost(String email, Long id) throws Exception{
+        return userService.emailCheck2(id, email);
     }
 
     // 로그인
@@ -115,6 +129,18 @@ public class UserController {
     @ResponseBody
     public Long update(@RequestBody User user, @AuthenticationPrincipal PrincipalDetail principalDetail) {
         userService.update(user, principalDetail);
+        return user.getId();
+    }
+
+    @GetMapping("/oauth/user/update")
+    public String userUpdate1(@AuthenticationPrincipal PrincipalDetail principalDetail, Model model){
+        model.addAttribute("principal", principalDetail.getUser());
+        return "user/oauthModify";
+    }
+    @PutMapping("/api/v1/oauthUser")
+    @ResponseBody
+    public Long update1(@RequestBody User user, @AuthenticationPrincipal PrincipalDetail principalDetail){
+        userService.update1(user, principalDetail);
         return user.getId();
     }
 
