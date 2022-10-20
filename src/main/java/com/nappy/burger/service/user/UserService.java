@@ -59,7 +59,7 @@ public class UserService {
 
 
     @Transactional
-    public Long updateUser(User user, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+    public Long update(User user, @AuthenticationPrincipal PrincipalDetail principalDetail) {
         User userEntity = userRepository.findById(user.getId()).orElseThrow(() -> new IllegalArgumentException("해당 회원이 없습니다. id=" + user.getId()));
         userEntity.update(bCryptPasswordEncoder.encode(user.getPassword()), user.getNickname(),
                 user.getName(), user.getZipcode(), user.getAddress(), user.getDetailAddress(),

@@ -112,8 +112,9 @@ public class UserController {
     }
 
     @PutMapping("/api/v1/user")
+    @ResponseBody
     public Long update(@RequestBody User user, @AuthenticationPrincipal PrincipalDetail principalDetail) {
-        userService.updateUser(user, principalDetail);
+        userService.update(user, principalDetail);
         return user.getId();
     }
 

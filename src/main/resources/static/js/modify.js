@@ -361,42 +361,6 @@ function isSubmitButton() {
 document.getElementById("joinForm").onsubmit = function () {
     if (isAllCheck()) {
         alert('응애!');
-
-        let data = {
-            id: $("#id").val(),
-            username,
-            password,
-            nickname,
-            name1,
-            zipcode,
-            address,
-            detailAddress
-        }
-
-        var token = $("meta[name='_csrf']").attr("content");
-        var header = $("meta[name='_csrf_header']").attr("content");
-
-        $.ajax({
-            type: "PUT",
-            url: "/api/v1/user",
-            data: JSON.stringify(data),
-            beforeSend: function (xhr) {
-                /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
-                xhr.setRequestHeader(header, token);
-            },
-            dataType: "json",
-            cache: false,
-            success: function (result, status) {
-                location.href = '/cart';
-            }, error: function (jqXHR, status, error) {
-                if (jqXHR.status == '401') {
-                    alert('로그인 후 이용해주세요');
-                    location.href = '/auth/user/login';
-                } else {
-                    alert(jqXHR.responseJSON.message);
-                }
-            }
-        })
         return true;
     } else {
         alert('모든 조건이 충족되어야합니다.');
@@ -404,6 +368,59 @@ document.getElementById("joinForm").onsubmit = function () {
     }
 }
 ;
+
+
+let index = {
+    init: function () {
+        $("#subit-button").on("click", () => {
+            let form = document.querySelector("#joinForm");
+            if (form.checkValidity() == false) {
+                console.log("수정 안됨")
+            } else {
+                this.update();
+            }
+        })
+    },
+
+    update: function () {
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+
+        var url = "/api/v1/user";
+
+        let data = {
+            id: $("#id").val(),
+            password: $("#password").val(),
+            nickname: $("#nickname").val(),
+            name: $("#name").val(),
+            zipcode: $("#zipcode").val(),
+            address: $("#address").val(),
+            detailAddress: $("#detailAddress").val(),
+            email: $("#email").val()
+        }
+
+        $.ajax({
+            type: "PUT",
+            url: url,
+            data: JSON.stringify(data),
+            beforeSend: function (xhr) {
+                /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                xhr.setRequestHeader(header, token);
+            },
+            dataType: "json",
+            cache: false,
+            contentType: 'application/json; charset=utf-8',
+            success: function (res) {
+                alert("hi")
+                location.href = "/";
+            }, error: function (err) {
+                alert(JSON.stringify(err))
+            }
+        })
+    }
+}
+index.init();
+
 
 
 //-------- 유효성 검사에서 사용하는 함수다 ---------//
