@@ -17,7 +17,8 @@ public class Jqurey {
 
     @RequestMapping("jq/kakaopayment")
     @ResponseBody
-    public String kakaopay(String item_name, String quantity, String partner_user_id, String total_amount) {
+    public String kakaopay(String item_name, String quantity, String partner_user_id, String total_amount,
+                           String approval_url) {
         try {
             URL address = new URL("https://kapi.kakao.com/v1/payment/ready");
             HttpURLConnection urlCon = (HttpURLConnection) address.openConnection(); // 서버연결
@@ -27,7 +28,8 @@ public class Jqurey {
             urlCon.setDoOutput(true);
             String parameter = "cid=TC0ONETIME&partner_order_id=partner_order_id&partner_user_id=" + partner_user_id +
                     "&item_name=" + item_name + "&quantity=" + quantity + "&total_amount=" + total_amount +
-                    "&tax_free_amount=0&approval_url=http://localhost:8080&fail_url=http://localhost:8080&cancel_url=http://localhost:8080";
+                    "&tax_free_amount=0&approval_url="
+                    + approval_url + "&fail_url=http://localhost:8080&cancel_url=http://localhost:8080";
 
 //            String parameter = "cid=TC0ONETIME&partner_order_id=partner_order_id" +
 //                    "&partner_user_id=partner_user_id&item_name=초코파이" +
@@ -39,7 +41,6 @@ public class Jqurey {
             dataSend.writeBytes(parameter);
             dataSend.close();
             int result = urlCon.getResponseCode();
-
             InputStream dataGet;
             if (result == 200) {
                 dataGet = urlCon.getInputStream();

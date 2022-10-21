@@ -12,21 +12,40 @@
 </th:block>
 <th:block layout:fragment="script">
     <script th:inline="javascript">
+        $(document).ready(function () {
+
+            calculateTotalPrice();
+
+            $("#count").change(function () {
+                calculateTotalPrice();
+            });
+        });
+
+        function calculateTotalPrice() {
+            var count = $("#count").val();
+            var price = $("#price").val();
+            var totalPrice = price * count;
+            $("#totalPrice").html(totalPrice + '원');
+        }
+
         $(function () {
             $('#apibtn').click(function () {
 
                 let partner_user_id = $('#userId').val();
+                let burgerId = $('#burgerId').val();
                 let item_name = $('#burger_name').val();
                 let quantity = $('#count').val();
                 let total_amount = $('#totalPrice').val();
-                console.log(partner_user_id, item_name, quantity, total_amount);
+                let approval_url = 'http://localhost:8080/payChk/' + burgerId + '/' + quantity;
+
 
                 $.ajax({
                     data: {
                         partner_user_id: partner_user_id,
                         item_name: item_name,
                         quantity: quantity,
-                        total_amount: total_amount
+                        total_amount: total_amount,
+                        approval_url: approval_url
                     },
                     url: '/jq/kakaopayment',
                     contentType: 'application/json;charset=UTF-8',
@@ -38,43 +57,7 @@
                     success: function (result) {
                         var box = result.next_redirect_pc_url;
                         window.open(box);
-
-                        var token = $("meta[name='_csrf']").attr("content");
-                        var header = $("meta[name='_csrf_header']").attr("content");
-
-                        var url = "/order";
-                        var paramData = {
-                            burgerId: $("#burgerId").val(),
-                            count: $("#count").val()
-                        };
-
-                        var param = JSON.stringify(paramData);
-
-                        $.ajax({
-                            url: url,
-                            type: "POST",
-                            contentType: "application/json",
-                            data: param,
-                            beforeSend: function (xhr) {
-                                /* 데이터를 전송하기 전에 헤더에 csrf 값을 설정 */
-                                xhr.setRequestHeader(header, token);
-                            },
-                            dataType: "json",
-                            cache: false,
-                            success: function (result, status) {
-                                alert("주문이 완료 되었습니다.");
-                                location.href = '/';
-                            },
-                            error: function (jqXHR, status, error) {
-                                if (jqXHR.status == '401') {
-                                    alert('로그인 후 이용해주세요');
-                                    location.href = '/auth/user/login';
-                                } else {
-                                    alert(jqXHR.responseText);
-                                }
-                            }
-                        });
-
+                        console.log(approval_url);
                     }, error: function (error, request, stauts) {
                         alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
                         console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
@@ -95,10 +78,12 @@
         <input type="text" th:value="${#authentication.principal.detailAddress}" readonly>
         <input type="text" id="burger_name" th:value="${burger.burgerName}">
         <input type="text" id="burgerId" name="bugerId" th:value="${burger.id}">
-        <input type="text" id="totalPrice" name="totalPrice" th:value="${burger.price}">
+        <input type="hidden" th:value="${burger.price}" id="price" name="price">
+        <span th:text="${burger.price}" hidden></span>원
+        <h3 name="totalPrice" id="totalPrice" class="font-weight-bold"></h3>
         <input type="text" id="memberEmail" name="memberEmail" th:value="${#authentication.principal.email}">
         <input type="text" id="memberName" name="memberName" th:value="${#authentication.principal.name}">
-        <input type="number" name="count" id="count" class="form-control" value="1" min="1">
+        <input type="number" name="count" id="count" class="form-control" th:value="${count}">
         <input id="userId" th:value="${principal.username}">
     </form>
     <button type="button" class="btn btn-light border border-primary btn-lg"

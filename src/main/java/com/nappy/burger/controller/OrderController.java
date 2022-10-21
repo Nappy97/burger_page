@@ -32,16 +32,29 @@ public class OrderController {
 
     private final BurgerService burgerService;
 
-    // 주문 체크]
-    @GetMapping("orderCheck/{burgerId}")
+    // 주문 체크
+    @GetMapping("orderCheck/{burgerId}/{count}")
     public String orderCheck(Model model, @PathVariable("burgerId") Long burgerId,
+                             @PathVariable("count") int count,
                              @AuthenticationPrincipal PrincipalDetail principalDetail){
         BurgerFormDto burgerFormDto = burgerService.getBurgerDetail(burgerId);
         model.addAttribute("principal", principalDetail.getUser());
         model.addAttribute("burger", burgerFormDto);
+        model.addAttribute("count", count);
         return "order/orderCheck";
     }
 
+
+    @GetMapping(value = "/payChk/{burgerId}/{count}")
+    public String payCheck(Model model, @PathVariable("burgerId") Long burgerId,
+                           @PathVariable("count") int count,
+                           @AuthenticationPrincipal PrincipalDetail principalDetail){
+        BurgerFormDto burgerFormDto = burgerService.getBurgerDetail(burgerId);
+        model.addAttribute("principal", principalDetail.getUser());
+        model.addAttribute("burger", burgerFormDto);
+        model.addAttribute("count", count);
+        return "order/payChk";
+    }
 
     // 단일 상품 주문
     @PostMapping(value = "/order")

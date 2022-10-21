@@ -26,7 +26,12 @@
             $("#totalPrice").html(totalPrice + '원');
         }
 
-        function order() {
+        function orderGo(){
+            var burgerId= $("#burgerId").val();
+            var count= $("#count").val();
+            location.href = '/orderCheck/'+burgerId+"/"+count;
+        }
+        function order1() {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -183,7 +188,8 @@
                         onclick="addCart()">장바구니 담기
                 </button>
                 <button type="button" class="btn btn-primary btn-lg"
-                        th:onclick="|location.href='/orderCheck/ + ${burger.id}'|">주문하기
+                        onclick="orderGo()"> 주문하기
+<!--                                "|location.href='/orderCheck/ + ${burger.id} + / + ${count}' |"-->
                 </button>
             </div>
             <div th:unless="${burger.burgerSellStatus == T(com.nappy.burger.domain.burger.BurgerSellStatus).SELL}"
