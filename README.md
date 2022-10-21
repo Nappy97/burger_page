@@ -33,8 +33,8 @@
 ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white)
 
 # 추가예정
-## 1. OAUTH(기본시스템 완, 추가정보 받을 수있게 만들기)
-## 2. 결제 (결제시스템 추가하기)
+## 1. OAUTH(완)
+## 2. 결제 (결제시스템 추가하기 (절반완))
 ## 3. 관리자 통계 보기
 ## 4. 주소 api (완)
 ## 5. 장바구니 (완)
