@@ -9,72 +9,72 @@
 <th:block layout:fragment="script">
     <script th:inline="javascript">
 
-        $(document).ready(function(){
-            $("input[name=cartChkBox]").change( function(){
+        $(document).ready(function () {
+            $("input[name=cartChkBox]").change(function () {
                 getOrderTotalPrice();
             });
         });
 
         //  총 주문 금액 출력
-        function getOrderTotalPrice(){
+        function getOrderTotalPrice() {
             var orderTotalPrice = 0;
-            $("input[name=cartChkBox]:checked").each(function() {
+            $("input[name=cartChkBox]:checked").each(function () {
                 var cartBurgerId = $(this).val();
                 var price = $("#price_" + cartBurgerId).attr("data-price");
                 var count = $("#count_" + cartBurgerId).val();
-                orderTotalPrice += price*count;
+                orderTotalPrice += price * count;
             });
 
-            $("#orderTotalPrice").html(orderTotalPrice+'원');
+            $("#orderTotalPrice").html(orderTotalPrice + '원');
         }
 
         // 전체선택 또는 전체해제
-        function checkAll(){
-            if($("#checkall").prop("checked")){
-                $("input[name=cartChkBox]").prop("checked",true);
-            }else{
-                $("input[name=cartChkBox]").prop("checked",false);
+        function checkAll() {
+            if ($("#checkall").prop("checked")) {
+                $("input[name=cartChkBox]").prop("checked", true);
+            } else {
+                $("input[name=cartChkBox]").prop("checked", false);
             }
             getOrderTotalPrice();
         }
 
         // 상품 수량 변경
-        function changeCount(obj){
+        function changeCount(obj) {
             var count = obj.value;
             var cartBurgerId = obj.id.split('_')[1];
             var price = $("#price_" + cartBurgerId).data("price");
-            var totalPrice = count*price;
-            $("#totalPrice_" + cartBurgerId).html(totalPrice+"원");
+            var totalPrice = count * price;
+            $("#totalPrice_" + cartBurgerId).html(totalPrice + "원");
             getOrderTotalPrice();
             updateCartBurgerCount(cartBurgerId, count);
         }
 
 
         // 상품 수량 변경 DB 적용을 위해 "/cartBurger/{cartBurgerId}?count=value" 요청
-        function updateCartBurgerCount(cartBurgerId, count){
+        function updateCartBurgerCount(cartBurgerId, count) {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
-            var url = "/cartBurger/" + cartBurgerId+"?count=" + count;
+            var url = "/cartBurger/" + cartBurgerId + "?count=" + count;
 
             $.ajax({
-                url      : url,
-                type     : "PATCH",
-                beforeSend : function(xhr){
+                url: url,
+                type: "PATCH",
+                beforeSend: function (xhr) {
                     /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
                     xhr.setRequestHeader(header, token);
                 },
-                dataType : "json",
-                cache   : false,
-                success  : function(result, status){
+                dataType: "json",
+                cache: false,
+                success: function (result, status) {
                     console.log("cartBurger count update success");
                 },
-                error : function(jqXHR, status, error){
+                error: function (jqXHR, status, error) {
 
-                    if(jqXHR.status == '401'){
+                    if (jqXHR.status == '401') {
                         alert('로그인 후 이용해주세요');
-                        location.href='/auth/user/login';
-                    } else{
+                        location.href = '/auth/user/login';
+                    } else {
                         alert(jqXHR.responseJSON.message);
                     }
 
@@ -83,7 +83,7 @@
         }
 
         // 장바구니 삭제 요청
-        function deleteCartBurger(obj){
+        function deleteCartBurger(obj) {
             var cartBurgerId = obj.dataset.id;
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
@@ -91,23 +91,23 @@
             var url = "/cartBurger/" + cartBurgerId;
 
             $.ajax({
-                url      : url,
-                type     : "DELETE",
-                beforeSend : function(xhr){
+                url: url,
+                type: "DELETE",
+                beforeSend: function (xhr) {
                     /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
                     xhr.setRequestHeader(header, token);
                 },
-                dataType : "json",
-                cache   : false,
-                success  : function(result, status){
-                    location.href='/cart';
+                dataType: "json",
+                cache: false,
+                success: function (result, status) {
+                    location.href = '/cart';
                 },
-                error : function(jqXHR, status, error){
+                error: function (jqXHR, status, error) {
 
-                    if(jqXHR.status == '401'){
+                    if (jqXHR.status == '401') {
                         alert('로그인 후 이용해주세요');
-                        location.href='/auth/user/login';
-                    } else{
+                        location.href = '/auth/user/login';
+                    } else {
                         alert(jqXHR.responseJSON.message);
                     }
 
@@ -115,8 +115,26 @@
             });
         }
 
+        function ordersGo() {
+            var dataList = new Array();
+            $("input[name=cartChkBox]:checked").each(function () {
+                var cartBurgerId = $(this).val();
+                var data = new Object();
+                data["cartBurgerId"] = cartBurgerId;
+                dataList.push(data);
+                for (var i=0; i<dataList.length; i++){
+                    console.log(dataList[i]);
+                    var ad = '&'+dataList[i].cartBurgerId;
+                    alert(ad);
+                    location.href='/cartChk/' + ad;
+                }
+            });
+
+            // location.href = '/cartChk/' + data.cartBurgerId;
+        }
+
         // 장바구니 상품(들) 주문
-        function orders(){
+        function orders() {
             var token = $("meta[name='_csrf']").attr("content");
             var header = $("meta[name='_csrf_header']").attr("content");
 
@@ -125,7 +143,7 @@
             var dataList = new Array();
             var paramData = new Object();
 
-            $("input[name=cartChkBox]:checked").each(function() {
+            $("input[name=cartChkBox]:checked").each(function () {
                 var cartBurgerId = $(this).val();
                 var data = new Object();
                 data["cartBurgerId"] = cartBurgerId;
@@ -137,26 +155,26 @@
             var param = JSON.stringify(paramData);
 
             $.ajax({
-                url      : url,
-                type     : "POST",
-                contentType : "application/json",
-                data     : param,
-                beforeSend : function(xhr){
+                url: url,
+                type: "POST",
+                contentType: "application/json",
+                data: param,
+                beforeSend: function (xhr) {
                     /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
                     xhr.setRequestHeader(header, token);
                 },
-                dataType : "json",
-                cache   : false,
-                success  : function(result, status){
+                dataType: "json",
+                cache: false,
+                success: function (result, status) {
                     alert("주문이 완료 되었습니다.");
-                    location.href='/orders';
+                    location.href = '/orders';
                 },
-                error : function(jqXHR, status, error){
+                error: function (jqXHR, status, error) {
 
-                    if(jqXHR.status == '401'){
+                    if (jqXHR.status == '401') {
                         alert('로그인 후 이용해주세요');
-                        location.href='/auth/user/login';
-                    } else{
+                        location.href = '/auth/user/login';
+                    } else {
                         alert(jqXHR.responseJSON.message);
                     }
 
@@ -169,31 +187,31 @@
 
 <th:block layout:fragment="css">
     <style>
-        .content-mg{
-            margin-left:25%;
-            margin-right:25%;
-            margin-top:2%;
-            margin-bottom:100px;
-        }
-        .repImgDiv{
-            margin-right:15px;
-            margin-left:15px;
-            height:auto;
-        }
-        .repImg{
-            height:100px;
-            width:100px;
-        }
-        .fs18{
-            font-size:18px
-        }
-        .fs24{
-            font-size:24px
+        .content-mg {
+            margin-left: 25%;
+            margin-right: 25%;
+            margin-top: 2%;
+            margin-bottom: 100px;
         }
 
+        .repImgDiv {
+            margin-right: 15px;
+            margin-left: 15px;
+            height: auto;
+        }
 
+        .repImg {
+            height: 100px;
+            width: 100px;
+        }
 
+        .fs18 {
+            font-size: 18px
+        }
 
+        .fs24 {
+            font-size: 24px
+        }
 
 
     </style>
@@ -263,7 +281,7 @@
         </h2>
 
         <div class="text-center mt-3">
-            <button type="button" class="btn btn-primary btn-lg" onclick="orders()">주문하기</button>
+            <button type="button" class="btn btn-primary btn-lg" onclick="ordersGo()">주문하기</button>
         </div>
     </div>
 </div>

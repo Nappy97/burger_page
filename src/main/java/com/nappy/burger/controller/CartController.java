@@ -99,7 +99,25 @@ public class CartController {
     @GetMapping("/cart/orderChk")
     public String orderChk(@AuthenticationPrincipal PrincipalDetail principalDetail, Model model) {
         model.addAttribute("principal", principalDetail.getUser());
-        return "cart/orderChk";
+        return "payChk";
+    }
+
+    @GetMapping(value = "/cartChk/{cartBurgerId}")
+    public String cartCheck(Model model, @PathVariable("cartBurgerId") Long cartBurgerId,
+                           @AuthenticationPrincipal PrincipalDetail principalDetail, Principal principal){
+        model.addAttribute("principal", principalDetail.getUser());
+        List<CartListDto> cartListDtos = cartService.getCartList(principal.getName());
+        model.addAttribute("cartBurgers", cartListDtos);
+        return "cart/cartChk";
+    }
+
+    @GetMapping(value = "/cart/payChk/{burgerId}/{count}")
+    public String payCheck(Model model, @PathVariable("burgerId") Long burgerId,
+                           @PathVariable("count") int count,
+                           @AuthenticationPrincipal PrincipalDetail principalDetail){
+        model.addAttribute("principal", principalDetail.getUser());
+        model.addAttribute("count", count);
+        return "cart/payChk";
     }
 
     @PostMapping(value = "/cart/orders")
