@@ -132,6 +132,7 @@ public class UserController {
         return user.getId();
     }
 
+    // oauth 유저 추가 정보
     @GetMapping("/oauth/user/update")
     public String userUpdate1(@AuthenticationPrincipal PrincipalDetail principalDetail, Model model){
         model.addAttribute("principal", principalDetail.getUser());
@@ -140,6 +141,20 @@ public class UserController {
     @PutMapping("/api/v1/oauthUser")
     @ResponseBody
     public Long update1(@RequestBody User user, @AuthenticationPrincipal PrincipalDetail principalDetail){
+        userService.update1(user, principalDetail);
+        return user.getId();
+    }
+
+    // oauth 유저 회원 수정
+    @GetMapping("/oauthUser/update")
+    public String oauthUserUpdate(@AuthenticationPrincipal PrincipalDetail principalDetail, Model model){
+        model.addAttribute("principal", principalDetail.getUser());
+        return "user/oauthUpdate";
+    }
+
+    @PutMapping("/api/v1/oauthUserModi")
+    @ResponseBody
+    public Long update2(@RequestBody User user, @AuthenticationPrincipal PrincipalDetail principalDetail){
         userService.update1(user, principalDetail);
         return user.getId();
     }

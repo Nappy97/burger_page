@@ -12,92 +12,99 @@
 </th:block>
 <th:block layout:fragment="script">
     <script th:inline="javascript">
+        $(function () {
+            $('#apibtn').click(function () {
 
-        /** 결제 **/
-            // 결제 금액, 구매자의 이름, 이메일
-        const priceAmount = $('#totalPrice').val();
-        const buyerMemberEmail = $('#memberEmail').val();
-        const buyerMemberName = $('#memberName').val();
-        // const form = document.getElementById("payment");
+                let partner_user_id = $('#userId').val();
+                let item_name = $('#burger_name').val();
+                let quantity = $('#count').val();
+                let total_amount = $('#totalPrice').val();
+                console.log(partner_user_id, item_name, quantity, total_amount);
 
-        console.log(priceAmount);
-        console.log(buyerMemberName);
-        console.log(buyerMemberEmail);
-        const IMP = window.IMP;
-        IMP.init('imp38272884');
-
-        function requestPay() {
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-            // IMP.request_pay(param, callback) 결제창 호출
-            IMP.request_pay({ // param
-                pg: "kakaopay.TC0ONETIME",
-                pay_method: "card",
-                merchant_uid: 'cart_' + new Date().getTime(),
-                name: "Helpring 강의",
-                amount: priceAmount,
-                buyer_email: buyerMemberEmail,
-                buyer_name: buyerMemberName,
-
-            }, function (rsp) { // callback
-                rsp.imp_uid = $("#burgerId").val();
-                /** 결제 검증 **/
                 $.ajax({
-                    type: 'POST',
-                    url: '/verifyIamport/' + rsp.imp_uid,
-                    beforeSend: function (xhr) {
-                        xhr.setRequestHeader(header, token);
-                    }
-                }).done(function (result) {
+                    data: {
+                        partner_user_id: partner_user_id,
+                        item_name: item_name,
+                        quantity: quantity,
+                        total_amount: total_amount
+                    },
+                    url: '/jq/kakaopayment',
+                    contentType: 'application/json;charset=UTF-8',
+                    dataType: 'JSON',
+                    // beforeSend: function (xhr) {
+                    //     /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    //     xhr.setRequestHeader(header, token);
+                    // },
+                    success: function (result) {
+                        var box = result.next_redirect_pc_url;
+                        window.open(box);
 
-                    // rsp.paid_amount와 result.response.amount(서버 검증) 비교 후 로직 실행
-                    if (rsp.paid_amount === result.response.amount) {
-                        alert("결제가 완료되었습니다.");
+                        var token = $("meta[name='_csrf']").attr("content");
+                        var header = $("meta[name='_csrf_header']").attr("content");
+
+                        var url = "/order";
                         var paramData = {
                             burgerId: $("#burgerId").val(),
                             count: $("#count").val()
-                        }
+                        };
+
                         var param = JSON.stringify(paramData);
+
                         $.ajax({
-                            type: 'POST',
+                            url: url,
+                            type: "POST",
                             contentType: "application/json",
                             data: param,
-                            url: '/order',
                             beforeSend: function (xhr) {
+                                /* 데이터를 전송하기 전에 헤더에 csrf 값을 설정 */
                                 xhr.setRequestHeader(header, token);
+                            },
+                            dataType: "json",
+                            cache: false,
+                            success: function (result, status) {
+                                alert("주문이 완료 되었습니다.");
+                                location.href = '/';
+                            },
+                            error: function (jqXHR, status, error) {
+                                if (jqXHR.status == '401') {
+                                    alert('로그인 후 이용해주세요');
+                                    location.href = '/auth/user/login';
+                                } else {
+                                    alert(jqXHR.responseText);
+                                }
                             }
-                        }).done(function () {
-                            window.location.reload();
-                        }).fail(function (error) {
-                            alert(JSON.stringify(error));
-                        })
-                    } else {
-                        alert("결제에 실패했습니다." + "에러코드 : " + rsp.error_code + "에러 메시지 : " + rsp.error_message);
+                        });
 
+                    }, error: function (error, request, stauts) {
+                        alert("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                        console.log("code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                        console.log(error);
                     }
                 })
-            });
-        };
+            })
+        })
     </script>
 </th:block>
 
 <div layout:fragment="content">
     <h2>주문하기</h2>
-    <form action="/order" method="post">
+    <form>
         <h3>주문자 정보</h3>
         <span>주소</span>
         <input type="text" th:value="${#authentication.principal.address}" readonly>
         <input type="text" th:value="${#authentication.principal.detailAddress}" readonly>
-        <input type="text" th:value="${burger.burgerName}">
+        <input type="text" id="burger_name" th:value="${burger.burgerName}">
         <input type="text" id="burgerId" name="bugerId" th:value="${burger.id}">
         <input type="text" id="totalPrice" name="totalPrice" th:value="${burger.price}">
         <input type="text" id="memberEmail" name="memberEmail" th:value="${#authentication.principal.email}">
         <input type="text" id="memberName" name="memberName" th:value="${#authentication.principal.name}">
-        <input type="text" id="count" name="count" value="1">
+        <input type="number" name="count" id="count" class="form-control" value="1" min="1">
+        <input id="userId" th:value="${principal.username}">
     </form>
     <button type="button" class="btn btn-light border border-primary btn-lg"
-            onclick="requestPay()">장바구니 담기
+            id="apibtn">장바구니 담기
     </button>
+
 </div>
 
 </html>

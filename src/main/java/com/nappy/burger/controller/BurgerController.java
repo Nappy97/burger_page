@@ -1,5 +1,6 @@
 package com.nappy.burger.controller;
 
+import com.nappy.burger.config.auth.PrincipalDetail;
 import com.nappy.burger.domain.burger.Burger;
 import com.nappy.burger.dto.burger.BurgerFormDto;
 import com.nappy.burger.dto.burger.BurgerSearchDto;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,8 +32,8 @@ public class BurgerController {
 
     // 버거 등록 페이지
     @GetMapping("/admin/burger/new")
-    public String burgerForm(BurgerFormDto burgerFormDto, Model model) {
-
+    public String burgerForm(BurgerFormDto burgerFormDto, Model model, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+        model.addAttribute("principal", principalDetail.getUser());
         model.addAttribute("burgerFormDto", burgerFormDto);
         return "burger/burgerForm";
     }
@@ -61,8 +63,10 @@ public class BurgerController {
     // 관리 페이지
     @GetMapping(value = {"/admin/burgers", "/admin/burgers/{page}"})
     public String burgerManage(BurgerSearchDto burgerSearchDto,
-                               @PathVariable(name = "page") Optional<Integer> page, Model model) {
+                               @PathVariable(name = "page") Optional<Integer> page, Model model,
+                               @AuthenticationPrincipal PrincipalDetail principalDetail) {
 
+        model.addAttribute("principal", principalDetail.getUser());
         // PageRequest.of() 메소드를 통해 Pageable 객체 생성
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 3);
         Page<Burger> burgers = burgerService.getAdminBrugerPage(burgerSearchDto, pageable);
@@ -75,7 +79,9 @@ public class BurgerController {
 
     // 수정 페이지
     @GetMapping(value = "/admin/burger/{burgerId}")
-    public String burgerDetail(@PathVariable(name = "burgerId") Long burgerId, Model model) {
+    public String burgerDetail(@PathVariable(name = "burgerId") Long burgerId, Model model,
+                               @AuthenticationPrincipal PrincipalDetail principalDetail) {
+        model.addAttribute("principal", principalDetail.getUser());
         try{
             BurgerFormDto burgerFormDto = burgerService.getBurgerDetail(burgerId);
             model.addAttribute("burgerFormDto", burgerFormDto);
@@ -105,7 +111,9 @@ public class BurgerController {
 
     // 디테일 페이지
     @GetMapping(value = "/burger/{burgerId}")
-    public String burgerDetail(Model model, @PathVariable("burgerId") Long burgerId){
+    public String burgerDetail(Model model, @PathVariable("burgerId") Long burgerId,
+                               @AuthenticationPrincipal PrincipalDetail principalDetail){
+        model.addAttribute("principal", principalDetail.getUser());
         BurgerFormDto burgerFormDto = burgerService.getBurgerDetail(burgerId);
         model.addAttribute("burger", burgerFormDto);
         return "burger/burgerDetail";

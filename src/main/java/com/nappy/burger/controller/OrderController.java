@@ -1,5 +1,6 @@
 package com.nappy.burger.controller;
 
+import com.nappy.burger.config.auth.PrincipalDetail;
 import com.nappy.burger.dto.burger.BurgerFormDto;
 import com.nappy.burger.dto.order.OrderDto;
 import com.nappy.burger.dto.order.OrderHistDto;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -32,8 +34,10 @@ public class OrderController {
 
     // 주문 체크]
     @GetMapping("orderCheck/{burgerId}")
-    public String orderCheck(Model model, @PathVariable("burgerId") Long burgerId){
+    public String orderCheck(Model model, @PathVariable("burgerId") Long burgerId,
+                             @AuthenticationPrincipal PrincipalDetail principalDetail){
         BurgerFormDto burgerFormDto = burgerService.getBurgerDetail(burgerId);
+        model.addAttribute("principal", principalDetail.getUser());
         model.addAttribute("burger", burgerFormDto);
         return "order/orderCheck";
     }
@@ -69,7 +73,8 @@ public class OrderController {
     // 주문 내역 조회
     @GetMapping(value = {"/orders", "/orders/{page}"})
     public String orderHist(@PathVariable(name = "page") Optional<Integer> page,
-                            Principal principal, Model model) {
+                            Principal principal, Model model,
+                            @AuthenticationPrincipal PrincipalDetail principalDetail) {
 
         Pageable pageable = PageRequest.of(page.isPresent() ? page.get() : 0, 4);
 
@@ -77,6 +82,7 @@ public class OrderController {
         model.addAttribute("orders", orderHistDtos);
         model.addAttribute("page", pageable.getPageNumber());
         model.addAttribute("maxPage", 5);
+        model.addAttribute("principal", principalDetail.getUser());
         return "order/orderHist";
     }
 

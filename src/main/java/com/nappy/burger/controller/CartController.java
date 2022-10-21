@@ -1,5 +1,6 @@
 package com.nappy.burger.controller;
 
+import com.nappy.burger.config.auth.PrincipalDetail;
 import com.nappy.burger.dto.cart.CartBurgerDto;
 import com.nappy.burger.dto.cart.CartListDto;
 import com.nappy.burger.dto.cart.CartOrderDto;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +32,7 @@ public class CartController {
     @ResponseBody
     public ResponseEntity cart(@RequestBody @Valid CartBurgerDto cartBurgerDto,
                                BindingResult bindingResult, Principal principal) {
-    log.info("hi");
+        log.info("hi");
         if (bindingResult.hasErrors()) {
             StringBuilder sb = new StringBuilder();
             List<FieldError> fieldErrors = bindingResult.getFieldErrors();
@@ -56,8 +58,10 @@ public class CartController {
 
     // 장바구니 조회
     @GetMapping(value = "/cart")
-    public String cartList(Principal principal, Model model) {
+    public String cartList(Principal principal, Model model,
+                           @AuthenticationPrincipal PrincipalDetail principalDetail) {
 
+        model.addAttribute("principal", principalDetail.getUser());
         List<CartListDto> cartListDtos = cartService.getCartList(principal.getName());
         model.addAttribute("cartBurgers", cartListDtos);
         log.info(cartListDtos.toString());
@@ -93,7 +97,8 @@ public class CartController {
 
     // 장바구니 상품을 주문
     @GetMapping("/cart/orderChk")
-    public String orderChk(){
+    public String orderChk(@AuthenticationPrincipal PrincipalDetail principalDetail, Model model) {
+        model.addAttribute("principal", principalDetail.getUser());
         return "cart/orderChk";
     }
 

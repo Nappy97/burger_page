@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/mainLayout}">
+<head>
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+
+<th:block layout:fragment="css">
+  <link rel="stylesheet" href="/css/style_join.css">
+</th:block>
+
+<div layout:fragment="content">
+  <div id="form-container">
+    <h2>회원 가입</h2>
+    <form id="joinForm">
+      <input type="hidden" id="id" th:value="${#authentication.principal.id}">
+
+      <div class="fieldset">
+        <label>닉네임<span>*</span></label>
+        <input type="text" class="input" placeholder="닉네임" name="nickname" title="이름" id="nickname"
+               required>
+        <div class='nickF-message hide msg'>4자 이상의 글자와 숫자를 조합해주세요</div>
+        <div class='nickS-message hide msg success'>가능한 닉네임입니다.</div>
+        <span class="nick_input_re_1 msg success">중복되지 않은 닉네임입니다.</span>
+        <span class="nick_input_re_2 msg">닉네임이 이미 존재합니다.</span>
+        <span class="nick_input_re_3 msg success">현재 사용중인 닉네임 입니다</span>
+      </div>
+
+      <div class="fieldset">
+        <label>이름<span>*</span></label>
+        <input type="text" class="input" placeholder="이름" name="name" title="이름" id="name"
+               required>
+        <div class="illegible-message hide msg">한글만 입력해주세요</div>
+        <div class="readable-message hide msg success">한글만 입력되었습니다!</div>
+      </div>
+
+      <div class="fieldset">
+        <label>우편번호<span>*</span></label>
+        <input type="text" class="input" placeholder="우편번호" name="zipcode" title="우편번호" id="zipcode"
+               style="width: 40%; display: inline;" required
+               readonly>
+        <button type="button" class="btn btn-default" onclick="execPostCode();">
+          <i class="fa fa-search"></i> 우편번호 찾기
+        </button>
+        <div class="zipcodeF-message hide msg">공백입니다.</div>
+        <div class="zipcodeS-message hide msg success">입력되었습니다!</div>
+      </div>
+
+      <div class="fieldset">
+        <label>주소<span>*</span></label>
+        <input type="text" class="input" placeholder="주소" name="address" title="주소" id="address"
+               required readonly>
+        <div class="addressF-message hide msg">공백입니다.</div>
+        <div class="addressS-message hide msg success">입력되었습니다!</div>
+      </div>
+
+      <div class="fieldset">
+        <label>상세주소<span>*</span></label>
+        <input type="text" class="input" placeholder="상세주소" name="detailAddress" title="상세주소"
+               id="detailAddress" required>
+        <div class="dAddressF-message hide msg">공백입니다.</div>
+        <div class="dAddressS-message hide msg success">입력되었습니다!</div>
+      </div>
+      <button id="subit-button"> 회원 수정 </button>
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+    </form>
+  </div>
+  <script type="text/javascript" src="/js/oauthUpdate.js"></script>
+  <script type="text/javascript" src="/js/modify-2.js"></script>
+</div>
+<th:block layout:fragment="script">
+  <script src="https://kit.fontawesome.com/e1bd1cb2a5.js"></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</th:block>
+</html>
