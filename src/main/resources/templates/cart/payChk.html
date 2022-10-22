@@ -1,12 +1,127 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/mainLayout}">
-<th:block layout:fragment="css">
+<head>
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+</head>
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        alert("결제가 완료 되었습니다");
+        $(document).ready(function () {
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
 
+            var url = "/cart/orders";
+
+            var dataList = new Array();
+            var paramData = new Object();
+
+            $("input[name=cartChkBox]").prop("checked", false).each(function () {
+                var cartBurgerId = $(this).val();
+                var data = new Object();
+                data["cartBurgerId"] = cartBurgerId;
+                dataList.push(data);
+            });
+
+            var param = JSON.stringify(paramData);
+
+            paramData['cartOrderDtoList'] = dataList;
+
+            var param = JSON.stringify(paramData);
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                contentType: "application/json",
+                data: param,
+                beforeSend: function (xhr) {
+                    /* 데이터를 전송하기 전에 헤더에 csrf값을 설정 */
+                    xhr.setRequestHeader(header, token);
+                },
+                dataType: "json",
+                cache: false,
+                success: function (result, status) {
+                    alert("주문이 완료 되었습니다.");
+                    location.href = '/orders';
+                },
+                error: function (jqXHR, status, error) {
+
+                    if (jqXHR.status == '401') {
+                        alert('로그인 후 이용해주세요');
+                        location.href = '/auth/user/login';
+                    } else {
+                        alert(jqXHR.responseJSON.message);
+                    }
+
+                }
+            });
+        })
+    </script>
 </th:block>
-
 <div layout:fragment="content">
-
+    <input id="cartId" th:value="${cartId}">
+    <div hidden>
+        <table class="table">
+            <colgroup>
+                <col width="15%"/>
+                <col width="70%"/>
+                <col width="15%"/>
+            </colgroup>
+            <thead>
+            <tr class="text-center">
+                <td>
+                    <input type="checkbox" id="checkall" onclick="checkAll()" hidden> 전체선택
+                </td>
+                <td>상품정보</td>
+                <td>상품금액</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cartBurger : ${cartBurgers}">
+                <td class="text-center align-middle">
+                    <input type="checkbox" name="cartChkBox" th:value="${cartBurger.cartBurgerId}" hidden>
+                </td>
+                <td class="d-flex">
+                    <div class="repImgDiv align-self-center">
+                        <img th:src="${cartBurger.imgUrl}" class="rounded repImg" th:alt="${cartBurger.burgerName}">
+                    </div>
+                    <div class="align-self-center">
+                        <span th:text="${cartBurger.burgerName}" class="fs24 font-weight-bold"></span>
+                        <div class="fs18 font-weight-light">
+                            <span class="input-group mt-2">
+                                <span th:id="'price_' + ${cartBurger.cartBurgerId}"
+                                      th:data-price="${cartBurger.price}"
+                                      th:text="${cartBurger.price} + '원'" class="align-self-center mr-2">
+                                </span>
+                                <input type="number" name="count" th:id="'count_' + ${cartBurger.cartBurgerId}"
+                                       th:value="${cartBurger.count}" min="1"
+                                       onchange="changeCount(this)" class="form-control mr-2">
+                                <button type="button" class="close" aria-label="Close">
+                                    <span aria-hidden="true" th:data-id="${cartBurger.cartBurgerId}"
+                                          onclick="deleteCartBurger(this)">&times;</span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </td>
+                <td class="text-center align-middle">
+                    <span th:id="'totalPrice_' + ${cartBurger.cartBurgerId}"
+                          name="totalPrice" th:text="${cartBurger.price * cartBurger.count} + '원'">
+                    </span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <input th:value="${principal.zipcode}">
+        <h2 class="text-center">
+            총 주문 금액 : <input id="orderTotalPrice" class="text-danger"></input>
+        </h2>
+        <input id="totalCount" value="1" hidden>
+        <div class="text-center mt-3">
+            <button type="button" class="btn btn-primary btn-lg" id="apibtn">주문하기</button>
+        </div>
+    </div>
 </div>
 </html>

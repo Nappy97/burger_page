@@ -1,6 +1,7 @@
 package com.nappy.burger.controller;
 
 import com.nappy.burger.config.auth.PrincipalDetail;
+import com.nappy.burger.domain.cart.Cart;
 import com.nappy.burger.dto.cart.CartBurgerDto;
 import com.nappy.burger.dto.cart.CartListDto;
 import com.nappy.burger.dto.cart.CartOrderDto;
@@ -96,33 +97,50 @@ public class CartController {
     }
 
     // 장바구니 상품을 주문
-    @GetMapping("/cart/orderChk")
-    public String orderChk(@AuthenticationPrincipal PrincipalDetail principalDetail, Model model) {
-        model.addAttribute("principal", principalDetail.getUser());
-        return "payChk";
-    }
-
-    @GetMapping(value = "/cartChk/{cartBurgerId}")
-    public String cartCheck(Model model, @PathVariable("cartBurgerId") Long cartBurgerId,
-                           @AuthenticationPrincipal PrincipalDetail principalDetail, Principal principal){
+    @GetMapping(value = "/cartChk")
+    public String cartCheck(Model model, @AuthenticationPrincipal PrincipalDetail principalDetail, Principal principal) {
         model.addAttribute("principal", principalDetail.getUser());
         List<CartListDto> cartListDtos = cartService.getCartList(principal.getName());
         model.addAttribute("cartBurgers", cartListDtos);
+        Cart carts = cartService.getCart(principal.getName());
+        model.addAttribute("cart", carts);
         return "cart/cartChk";
     }
 
-    @GetMapping(value = "/cart/payChk/{burgerId}/{count}")
-    public String payCheck(Model model, @PathVariable("burgerId") Long burgerId,
-                           @PathVariable("count") int count,
-                           @AuthenticationPrincipal PrincipalDetail principalDetail){
+    @GetMapping(value = "/payChk/{cartId}")
+    public String payCheck(Model model, @PathVariable("cartId") Long cartId,
+                           @AuthenticationPrincipal PrincipalDetail principalDetail,
+                           Principal principal) {
         model.addAttribute("principal", principalDetail.getUser());
-        model.addAttribute("count", count);
+        List<CartListDto> cartListDtos = cartService.getCartList(principal.getName());
+        model.addAttribute("cartBurgers", cartListDtos);
         return "cart/payChk";
     }
 
     @PostMapping(value = "/cart/orders")
     @ResponseBody
     public ResponseEntity orders(@RequestBody CartOrderDto cartOrderDto, Principal principal) {
+
+        List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
+
+        if (cartOrderDtoList == null || cartOrderDtoList.size() == 0) {
+            return new ResponseEntity<String>("주문할 상품을 선택해주세요!", HttpStatus.BAD_REQUEST);
+        }
+
+        // 장바구니 주문 상품들을 각각 검증
+        for (CartOrderDto cartOrderDto1 : cartOrderDtoList) {
+            if (!cartService.validateCartBurger(cartOrderDto1.getCartBurgerId(), principal.getName())) {
+                return new ResponseEntity<String>("주문 권한이 없습니다.", HttpStatus.FORBIDDEN);
+            }
+        }
+
+        Long orderId = cartService.orderCartBurger(cartOrderDtoList, principal.getName());
+        return new ResponseEntity<Long>(orderId, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/cart/ordersChk")
+    @ResponseBody
+    public ResponseEntity ordersChk(@RequestBody CartOrderDto cartOrderDto, Principal principal) {
 
         List<CartOrderDto> cartOrderDtoList = cartOrderDto.getCartOrderDtoList();
 

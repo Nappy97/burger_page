@@ -10,15 +10,13 @@
     <script th:inline="javascript">
 
         $(document).ready(function () {
-            $("input[name=cartChkBox]").change(function () {
-                getOrderTotalPrice();
-            });
+            getOrderTotalPrice();
         });
 
         //  총 주문 금액 출력
         function getOrderTotalPrice() {
             var orderTotalPrice = 0;
-            $("input[name=cartChkBox]:checked").each(function () {
+            $("input[name=cartChkBox]").prop("checked", false).each(function () {
                 var cartBurgerId = $(this).val();
                 var price = $("#price_" + cartBurgerId).attr("data-price");
                 var count = $("#count_" + cartBurgerId).val();
@@ -116,20 +114,31 @@
         }
 
         function ordersGo() {
-            var dataList = new Array();
-            $("input[name=cartChkBox]:checked").each(function () {
-                var cartBurgerId = $(this).val();
-                var data = new Object();
-                data["cartBurgerId"] = cartBurgerId;
-                dataList.push(data);
-                for (var i=0; i<dataList.length; i++){
-                    console.log(dataList[i]);
-                    var ad = '&'+dataList[i].cartBurgerId;
-                    alert(ad);
-                    location.href='/cartChk/' + ad;
-                }
-            });
-
+            location.href = "/cartChk";
+            // var dataList = new Array();
+            // var paramData = new Object();
+            // $("input[name=cartChkBox]:checked").each(function () {
+            //     var cartBurgerId1 = $(this).val();
+            //     var count1 = $("input[name=cartChkBox]:checked").length;
+            //     console.log(count1)
+            //     console.log(cartBurgerId1);
+            //     var data = new Object();
+            //     data["cartBurgerId"] = cartBurgerId1;
+            //     dataList.push(data);
+            // });
+            // console.log(dataList);
+            // paramData['cartOrderDtoList'] = dataList;
+            // console.log(paramData);
+            // var param = JSON.stringify(paramData);
+            // console.log(param);
+            // const count1 = Object.keys(paramData.cartOrderDtoList).length;
+            // console.log(count1);
+            // for (var i=0; i<count1; i++){
+            //     console.log(paramData.cartOrderDtoList[i]);
+            //     var burgerId = paramData.cartOrderDtoList[i].cartBurgerId
+            //     // var burgerId = JSON.stringify(new Array(paramData.cartOrderDtoList[i].cartBurgerId));
+            //     console.log(burgerId);
+            // }
             // location.href = '/cartChk/' + data.cartBurgerId;
         }
 
@@ -233,7 +242,7 @@
             <thead>
             <tr class="text-center">
                 <td>
-                    <input type="checkbox" id="checkall" onclick="checkAll()"> 전체선택
+                    <input type="checkbox" id="checkall" onclick="checkAll()" hidden> 전체선택
                 </td>
                 <td>상품정보</td>
                 <td>상품금액</td>
@@ -242,7 +251,7 @@
             <tbody>
             <tr th:each="cartBurger : ${cartBurgers}">
                 <td class="text-center align-middle">
-                    <input type="checkbox" name="cartChkBox" th:value="${cartBurger.cartBurgerId}">
+                    <input type="checkbox" name="cartChkBox" th:value="${cartBurger.cartBurgerId}" hidden>
                 </td>
                 <td class="d-flex">
                     <div class="repImgDiv align-self-center">

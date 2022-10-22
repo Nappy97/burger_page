@@ -34,6 +34,7 @@ public class CartService {
     private final BurgerRepository burgerRepository;
     private final OrderService orderService;
 
+
     // 장바구니 담기
     public Long addCart(CartBurgerDto cartBurgerDto, String username) {
 
@@ -76,6 +77,17 @@ public class CartService {
 
         cartListDtos = cartBurgerRepository.findCartListDto(cart.getId());
         return cartListDtos;
+    }
+
+    // 장바구니 조회
+    @Transactional(readOnly = true)
+    public Cart getCart(String username) {
+
+        List<CartListDto> cartListDtos = new ArrayList<>();
+
+        User user = userRepository.findByUsername(username);
+
+        return cartRepository.findByUserId(user.getId());
     }
 
     // 현재 로그인한 사용자가 장바구니의 주인인지 확인

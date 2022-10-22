@@ -35,7 +35,6 @@ public class Jqurey2 {
 //                    "&partner_user_id=partner_user_id&item_name=초코파이" +
 //                    "&quantity=1&total_amount=2200&tax_free_amount=0&" +
 //                    "approval_url=http://localhost:8080&fail_url=http://localhost:8080&cancel_url=http://localhost:8080";
-
             OutputStream send = urlCon.getOutputStream();
             DataOutputStream dataSend = new DataOutputStream(send);
             dataSend.writeBytes(parameter);
