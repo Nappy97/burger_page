@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface OrderRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long>, OrderRepositoryCustom {
 
     @Query("select o from Order o " +
             "where o.user.username = :username " +
@@ -18,4 +18,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query("select count(o) from Order o " +
             "where o.user.username = :username ")
     Long countOrder(@Param("username") String username);
+
 }

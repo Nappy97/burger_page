@@ -1,0 +1,33 @@
+package com.nappy.burger.dto.order;
+
+import com.nappy.burger.domain.order.OrderStatus;
+import com.nappy.burger.domain.user.User;
+import com.querydsl.core.annotations.QueryProjection;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
+public class AdminOrderDto {
+
+    private Long orderId;
+
+    private String orderDate;
+
+    private OrderStatus orderStatus;
+
+    private User user;
+
+    private List<OrderBurgerDto> orderBurgerDtoList = new ArrayList<>();
+
+
+    @QueryProjection
+    public AdminOrderDto(Long orderId, String orderDate, User user) {
+        this.orderId = orderId;
+        this.orderDate = orderDate;
+        this.user = user;
+    }
+}

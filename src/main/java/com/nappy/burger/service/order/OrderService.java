@@ -8,6 +8,7 @@ import com.nappy.burger.domain.user.User;
 import com.nappy.burger.dto.order.OrderBurgerDto;
 import com.nappy.burger.dto.order.OrderDto;
 import com.nappy.burger.dto.order.OrderHistDto;
+import com.nappy.burger.dto.order.OrderSearchDto;
 import com.nappy.burger.repository.burger.BurgerImgRepository;
 import com.nappy.burger.repository.burger.BurgerRepository;
 import com.nappy.burger.repository.order.OrderRepository;
@@ -111,6 +112,11 @@ public class OrderService {
         Order order = Order.createOrder(user, orderBurgerList);
         orderRepository.save(order);
         return order.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Order> getAdminOrderTotalPage(OrderSearchDto orderSearchDto, Pageable pageable){
+        return orderRepository.getAdminOrderTotalPage(orderSearchDto, pageable);
     }
 }
 
