@@ -19,15 +19,18 @@ public class AdminOrderDto {
 
     private OrderStatus orderStatus;
 
+    private String imgUrl;
     private User user;
 
     private List<OrderBurgerDto> orderBurgerDtoList = new ArrayList<>();
 
 
     @QueryProjection
-    public AdminOrderDto(Long orderId, String orderDate, User user) {
+    public AdminOrderDto(Long orderId, String orderDate, OrderStatus orderStatus, User user, OrderBurgerDto orderBurgerDto) {
         this.orderId = orderId;
         this.orderDate = orderDate;
+        this.orderStatus = orderStatus;
         this.user = user;
+        this.orderBurgerDtoList = (List<OrderBurgerDto>) orderBurgerDto;
     }
 }

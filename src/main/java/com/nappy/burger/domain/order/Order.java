@@ -2,8 +2,7 @@ package com.nappy.burger.domain.order;
 
 import com.nappy.burger.domain.BaseEntity;
 import com.nappy.burger.domain.user.User;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +13,10 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "orders")
+@ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order extends BaseEntity {
 
     @Id

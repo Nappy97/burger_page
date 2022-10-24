@@ -1,7 +1,9 @@
 package com.nappy.burger.repository.order;
 
 import com.nappy.burger.domain.order.Order;
+import com.nappy.burger.domain.order.OrderStatus;
 import com.nappy.burger.domain.order.QOrder;
+import com.nappy.burger.domain.order.QOrderBurger;
 import com.nappy.burger.dto.order.OrderSearchDto;
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -45,20 +47,28 @@ public class OrderRepositoryCustomImpl implements OrderRepositoryCustom {
 
     // 상품명 또는 등록자 아이디에 대한 조회 조건 BooleanExpression
     private BooleanExpression searchByLike(String searchBy, String searchQuery) {
-        if (StringUtils.equals("username", searchBy)) {
+        if (StringUtils.equals("createdBy", searchBy)) {
+            return QOrder.order.createdBy.like("%" + searchQuery + "%");
+        } else if (StringUtils.equals("username", searchBy)) {
             return QOrder.order.user.username.like("%" + searchQuery + "%");
-        } else if (StringUtils.equals("nickname", searchBy)) {
-            return QOrder.order.user.nickname.like("%" + searchQuery + "%");
         }
         return null;
     }
 
+    // 상품 상태에 대한 조회 조건 BooleanExpression
+    private BooleanExpression searchOrderStatusEq(OrderStatus orderStatus) {
+        return orderStatus == null ? null : QOrder.order.orderStatus.eq(orderStatus);
+    }
+
     @Override
-    public Page<Order> getAdminOrderTotalPage(OrderSearchDto orderSearchDto, Pageable pageable){
+    public Page<Order> getAdminOrderTotalPage(OrderSearchDto orderSearchDto, Pageable pageable) {
+        QOrder order = QOrder.order;
+        QOrderBurger orderBurger = QOrderBurger.orderBurger;
 
         QueryResults<Order> results = jpaQueryFactory
                 .selectFrom(QOrder.order)
                 .where(regDtsAfter(orderSearchDto.getSearchDateType()),
+                        searchOrderStatusEq(orderSearchDto.getSearchOrderStatus()),
                         searchByLike(orderSearchDto.getSearchBy(), orderSearchDto.getSearchQuery()))
                 .orderBy(QOrder.order.id.desc())
                 .offset(pageable.getOffset())

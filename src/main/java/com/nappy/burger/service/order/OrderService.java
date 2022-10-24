@@ -5,10 +5,10 @@ import com.nappy.burger.domain.burger.BurgerImg;
 import com.nappy.burger.domain.order.Order;
 import com.nappy.burger.domain.order.OrderBurger;
 import com.nappy.burger.domain.user.User;
+import com.nappy.burger.dto.order.AdminOrderHistDto;
 import com.nappy.burger.dto.order.OrderBurgerDto;
 import com.nappy.burger.dto.order.OrderDto;
 import com.nappy.burger.dto.order.OrderHistDto;
-import com.nappy.burger.dto.order.OrderSearchDto;
 import com.nappy.burger.repository.burger.BurgerImgRepository;
 import com.nappy.burger.repository.burger.BurgerRepository;
 import com.nappy.burger.repository.order.OrderRepository;
@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
@@ -115,9 +116,26 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Order> getAdminOrderTotalPage(OrderSearchDto orderSearchDto, Pageable pageable){
-        return orderRepository.getAdminOrderTotalPage(orderSearchDto, pageable);
+    public Page<AdminOrderHistDto> getAdminOrderList(Pageable pageable){
+        List<Order> orders =orderRepository.findAll(Sort.by(Sort.Order.desc("id")));
+        Long totalCount = orderRepository.count();
+
+        List<AdminOrderHistDto> orderHistDtos = new ArrayList<>();
+
+        for (Order order : orders) {
+            AdminOrderHistDto orderHistDto = new AdminOrderHistDto(order);
+            List<OrderBurger> orderBurgers = order.getOrderBurgers();
+
+            for (OrderBurger orderBurger : orderBurgers) {
+                BurgerImg burgerImg = burgerImgRepository.findByBurgerIdAndRepimgYn(orderBurger.getBurger().getId(), "Y");
+                OrderBurgerDto orderBurgerDto = new OrderBurgerDto(orderBurger, burgerImg.getImgUrl());
+                orderHistDto.addOrderBurgerDto(orderBurgerDto);
+            }
+            orderHistDtos.add(orderHistDto);
+        }
+        return new PageImpl<>(orderHistDtos, pageable, totalCount);
     }
+
 }
 
 
