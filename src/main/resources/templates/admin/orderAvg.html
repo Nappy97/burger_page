@@ -5,10 +5,23 @@
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-        var burgerArray1 = new Array();
-        var burger = new Object();
-        var burger1 = new Object();
+        let burgerArray = new Array();
+        let burgerArray1 = new Array();
+        let burger = new Object();
+        let burger1 = new Object();
 
+        /*[# th:each="burger : ${orderBurgers}"]*/
+        burger =  /*[[${burger.burgerName}]]*/;
+        burgerArray.push(burger);
+        console.log(burgerArray);
+        /*[/]*/
+
+        /*[# th:each="burger : ${orderBurgers}"]*/
+        burger1 =  /*[[${burger.count}]]*/;
+        burgerArray1.push(burger1);
+        console.log(burgerArray1);
+        /*[/]*/
+        console.info(burgerArray1);
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
 
@@ -41,7 +54,7 @@
     <!--        <div th:text="${type.count}"></div>-->
     <!--    </th:block>-->
 
-<!--    <script type="text/javascript" src="/js/chart-bar-demo.js"></script>-->
+        <script type="text/javascript" src="/js/chart-bar-demo.js"></script>
 </div>
 
 </html>
