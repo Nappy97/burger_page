@@ -11,7 +11,7 @@ var myLineChart = new Chart(ctx, {
     data: {
         labels: burgerArray,
         datasets: [{
-            label: "Revenue",
+            label: "판매수량",
             backgroundColor: "rgba(2,117,216,1)",
             borderColor: "rgba(2,117,216,1)",
             data: burgerArray1,
