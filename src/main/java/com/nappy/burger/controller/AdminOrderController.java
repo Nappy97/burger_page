@@ -1,10 +1,7 @@
 package com.nappy.burger.controller;
 
 import com.nappy.burger.config.auth.PrincipalDetail;
-import com.nappy.burger.dto.order.AdminOrderHistDto;
-import com.nappy.burger.dto.order.OrderBurgerHistDto;
-import com.nappy.burger.dto.order.OrderBurgerSearchDto;
-import com.nappy.burger.dto.order.OrderBurgerTypeHistDto;
+import com.nappy.burger.dto.order.*;
 import com.nappy.burger.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
