@@ -5,12 +5,10 @@ import com.nappy.burger.domain.burger.BurgerImg;
 import com.nappy.burger.domain.order.Order;
 import com.nappy.burger.domain.order.OrderBurger;
 import com.nappy.burger.domain.user.User;
-import com.nappy.burger.dto.order.AdminOrderHistDto;
-import com.nappy.burger.dto.order.OrderBurgerDto;
-import com.nappy.burger.dto.order.OrderDto;
-import com.nappy.burger.dto.order.OrderHistDto;
+import com.nappy.burger.dto.order.*;
 import com.nappy.burger.repository.burger.BurgerImgRepository;
 import com.nappy.burger.repository.burger.BurgerRepository;
+import com.nappy.burger.repository.order.OrderBurgerRepository;
 import com.nappy.burger.repository.order.OrderRepository;
 import com.nappy.burger.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +33,8 @@ public class OrderService {
     private final UserRepository userRepository;    // 멤버를 불러와서 연결
     private final OrderRepository orderRepository;      // 주문 객체를 저장
     private final BurgerImgRepository burgerImgRepository;  // 상품 대표 이미즈를 출력
+
+    private final OrderBurgerRepository orderBurgerRepository;
 
     // 단일 상품 주문
     public Long order(OrderDto orderDto, String username) {
@@ -134,6 +134,16 @@ public class OrderService {
             orderHistDtos.add(orderHistDto);
         }
         return new PageImpl<>(orderHistDtos, pageable, totalCount);
+    }
+
+    @Transactional(readOnly = true)
+    public List<OrderBurgerHistDto> getAdminTotalPage(OrderBurgerSearchDto orderBurgerSearchDto) {
+        return orderBurgerRepository.getAdminTotalPage(orderBurgerSearchDto);
+    }
+
+    @Transactional(readOnly = true)
+    public List<OrderBurgerTypeHistDto> getAdminTypePage(OrderBurgerSearchDto orderBurgerSearchDto){
+        return orderBurgerRepository.getAdminTypePage(orderBurgerSearchDto);
     }
 
 }

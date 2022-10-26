@@ -2,6 +2,9 @@ package com.nappy.burger.controller;
 
 import com.nappy.burger.config.auth.PrincipalDetail;
 import com.nappy.burger.dto.order.AdminOrderHistDto;
+import com.nappy.burger.dto.order.OrderBurgerHistDto;
+import com.nappy.burger.dto.order.OrderBurgerSearchDto;
+import com.nappy.burger.dto.order.OrderBurgerTypeHistDto;
 import com.nappy.burger.service.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
@@ -14,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -37,6 +41,22 @@ public class AdminOrderController {
         model.addAttribute("principal", principalDetail.getUser());
 
         return "admin/orderChk";
+    }
+
+    @GetMapping(value = "/admin/ordersAvg")
+    public String adminOrderAvg(Model model,
+                                @AuthenticationPrincipal PrincipalDetail principalDetail,
+                                OrderBurgerSearchDto orderBurgerSearchDto) {
+
+        List<OrderBurgerHistDto> orderBurgers = orderService.getAdminTotalPage(orderBurgerSearchDto);
+
+        List<OrderBurgerTypeHistDto> orderBurgerTypeHistDtos = orderService.getAdminTypePage(orderBurgerSearchDto);
+
+        model.addAttribute("orderBurgers", orderBurgers);
+        model.addAttribute("orderTypes", orderBurgerTypeHistDtos);
+        model.addAttribute("orderSearchDto", orderBurgerSearchDto);
+        model.addAttribute("principal", principalDetail.getUser());
+        return "admin/orderAvg";
     }
 
 //    @GetMapping(value = {"/admin/orders", "/admin/orders/{page}"})

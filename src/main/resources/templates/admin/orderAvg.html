@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/mainLayout}">
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        var burgerArray1 = new Array();
+        var burger = new Object();
+        var burger1 = new Object();
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+
+</th:block>
+<th:block layout:fragment="css">
+
+</th:block>
+
+<div layout:fragment="content">
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-chart-area me-1"></i>
+            Bar Chart Example
+        </div>
+        <div class="card-body">
+            <canvas id="myBarChart" width="100%" height="50"></canvas>
+        </div>
+        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+    </div>
+
+    <th:block th:each="burger, status: ${orderBurgers }">
+        <input type="checkbox" id="burgerName" name="burgerName" th:text="${burger.burgerName}"></input>
+        <input type="checkbox" name="burgerCount1" id="burgerCount1" th:text="${burger.count}"></input>
+    </th:block>
+
+    <!--    <th:block th:each="type, status: ${orderTypes}">-->
+    <!--        <div th:text="${type.burgerType}">-->
+    <!--        </div>-->
+    <!--        <div th:text="${type.count}"></div>-->
+    <!--    </th:block>-->
+
+<!--    <script type="text/javascript" src="/js/chart-bar-demo.js"></script>-->
+</div>
+
+</html>
