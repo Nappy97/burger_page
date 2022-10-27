@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/mainLayout}">
+      layout:decorate="~{layouts/mainLayout}" hidden>
 <head>
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
@@ -48,7 +48,7 @@
         })
     </script>
 </th:block>
-<div layout:fragment="content">
+<div layout:fragment="content" hidden>
     <input id="burgerId" th:value="${burgerId}">
     <input id="count" th:value="${count}">
 </div>

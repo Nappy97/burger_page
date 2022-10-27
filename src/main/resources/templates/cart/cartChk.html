@@ -117,7 +117,7 @@
                 let item_name = $('#cartId').val();
                 let quantity = $('#totalCount').val();
                 let total_amount = $('#orderTotalPrice').val();
-                let approval_url = 'http://localhost:8080/payChk/' + item_name;
+                let approval_url = 'http://localhost:8080/payChk';
 
 
                 $.ajax({
@@ -150,6 +150,7 @@
     </script>
 </th:block>
 <th:block layout:fragment="css">
+    <link rel="stylesheet" href="/css/style_join.css">
     <style>
         .content-mg {
             margin-left: 25%;
@@ -182,10 +183,10 @@
 </th:block>
 
 <div layout:fragment="content" class="content-mg">
-    <input th:value="${principal.id}" id="id">
-    <input th:value="${cart.id}" id="cartId">
+    <input th:value="${principal.id}" id="id" hidden>
+    <input th:value="${cart.id}" id="cartId" hidden>
     <h2 class="mb-4">
-        장바구니 목록
+        주문목록
     </h2>
 
     <div>
@@ -198,7 +199,7 @@
             <thead>
             <tr class="text-center">
                 <td>
-                    <input type="checkbox" id="checkall" onclick="checkAll()" hidden> 전체선택
+                    <input type="checkbox" id="checkall" onclick="checkAll()" hidden> *
                 </td>
                 <td>상품정보</td>
                 <td>상품금액</td>
@@ -240,10 +241,20 @@
             </tr>
             </tbody>
         </table>
-        <input th:value="${principal.zipcode}">
+
         <h2 class="text-center">
-            총 주문 금액 : <input id="orderTotalPrice" class="text-danger"></input>
+            총 주문 금액 : <input id="orderTotalPrice" class="text-danger">
         </h2>
+
+        <div id="form-container">
+            <h2> 주문자 정보</h2>
+            <div class="fieldset">
+                <label>주소</label><br>
+                <input type="text" th:value="${#authentication.principal.address}" readonly>
+                <input type="text" th:value="${#authentication.principal.detailAddress}" readonly>
+            </div>
+        </div>
+
         <input id="totalCount" value="1" hidden>
         <div class="text-center mt-3">
             <button type="button" class="btn btn-primary btn-lg" id="apibtn">주문하기</button>

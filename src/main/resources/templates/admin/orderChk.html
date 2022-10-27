@@ -77,16 +77,9 @@
         <div th:each="order : ${orders.getContent()}">
             <div class="d-flex mb-3 align-self-center">
                 <h4 th:text="${order.orderDate} + ' 주문'"></h4>
-                <h4 th:text="${order.createdBy}"></h4>
+
                 <div class="ml-3">
-                    <th:block th:if="${order.orderStatus == T(com.nappy.burger.domain.order.OrderStatus).ORDER}">
-                        <button type="button" class="btn btn-outline-secondary"
-                                th:value="${order.orderId}" onclick="cancelOrder(this.value)">주문취소
-                        </button>
-                    </th:block>
-                    <th:block th:unless="${order.orderStatus == T(com.nappy.burger.domain.order.OrderStatus).ORDER}">
-                        <h6 style="margin-top : 6px">(취소 완료)</h6>
-                    </th:block>
+                    <h4 th:text="${order.createdBy}"></h4><span>님의 주문</span>
                 </div>
             </div>
             <div class="card d-flex">

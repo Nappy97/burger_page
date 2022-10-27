@@ -107,8 +107,8 @@ public class CartController {
         return "cart/cartChk";
     }
 
-    @GetMapping(value = "/payChk/{cartId}")
-    public String payCheck(Model model, @PathVariable("cartId") Long cartId,
+    @GetMapping(value = "/payChk")
+    public String payCheck(Model model,
                            @AuthenticationPrincipal PrincipalDetail principalDetail,
                            Principal principal) {
         model.addAttribute("principal", principalDetail.getUser());

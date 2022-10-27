@@ -8,7 +8,7 @@
 
 </head>
 <th:block layout:fragment="css">
-
+    <link rel="stylesheet" href="/css/style_join.css">
 </th:block>
 <th:block layout:fragment="script">
     <script th:inline="javascript">
@@ -25,7 +25,7 @@
             var count = $("#count").val();
             var price = $("#price").val();
             var totalPrice = price * count;
-            $("#totalPrice").html(totalPrice + '원');
+            $("#totalPrice").val(totalPrice);
         }
 
         $(function () {
@@ -70,26 +70,45 @@
 </th:block>
 
 <div layout:fragment="content">
-    <h2>주문하기</h2>
-    <form>
-        <h3>주문자 정보</h3>
-        <span>주소</span>
-        <input type="text" th:value="${#authentication.principal.address}" readonly>
-        <input type="text" th:value="${#authentication.principal.detailAddress}" readonly>
-        <input type="text" id="burger_name" th:value="${burger.burgerName}">
-        <input type="text" id="burgerId" name="bugerId" th:value="${burger.id}">
-        <input type="hidden" th:value="${burger.price}" id="price" name="price">
-        <span th:text="${burger.price}" hidden></span>원
-        <h3 name="totalPrice" id="totalPrice" class="font-weight-bold"></h3>
-        <input type="text" id="memberEmail" name="memberEmail" th:value="${#authentication.principal.email}">
-        <input type="text" id="memberName" name="memberName" th:value="${#authentication.principal.name}">
-        <input type="number" name="count" id="count" class="form-control" th:value="${count}">
-        <input id="userId" th:value="${principal.username}">
-    </form>
-    <button type="button" class="btn btn-light border border-primary btn-lg"
-            id="apibtn">결제하기
-    </button>
+    <div id="form-container">
+        <h2>주문하기</h2>
+        <form>
+            <h3>주문 정보</h3>
+            <input type="text" id="burgerId" name="bugerId" th:value="${burger.id}" hidden>
 
+            <div class="fieldset">
+                <label>버거이름</label>
+                <input type="text" id="burger_name" th:value="${burger.burgerName}" readonly>
+            </div>
+
+            <div class="fieldset">
+                <label>수량</label>
+                <input type="number" name="count" id="count" class="form-control" th:value="${count}">
+            </div>
+
+            <div class="fieldset">
+                <label>가격</label>
+                <input id="totalPrice" readonly>
+            </div>
+
+            <h3>주문자 정보</h3>
+            <div class="fieldset">
+                <label>주소</label><br>
+                <input type="text" th:value="${#authentication.principal.address}" readonly>
+                <input type="text" th:value="${#authentication.principal.detailAddress}" readonly>
+            </div>
+
+
+            <input type="hidden" th:value="${burger.price}" id="price" name="price">
+            <span th:text="${burger.price}" hidden></span>
+            <input type="text" id="memberEmail" name="memberEmail" th:value="${#authentication.principal.email}" hidden>
+            <input type="text" id="memberName" name="memberName" th:value="${#authentication.principal.name}" hidden>
+            <input id="userId" th:value="${principal.username}" hidden>
+        </form>
+        <button type="button" class="btn btn-light border border-primary btn-lg"
+                id="apibtn">결제하기
+        </button>
+    </div>
 </div>
 
 </html>

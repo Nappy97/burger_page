@@ -99,33 +99,32 @@
             </div>
         </th:block>
     </div>
-</div>
 
-<div th:with="start=${(burgers.number/maxPage)*maxPage + 1}, end=(${(burgers.totalPages == 0) ? 1 : (start + (maxPage - 1) < burgers.totalPages ? start + (maxPage - 1) : burgers.totalPages)})">
-    <ul class="pagination justify-content-center">
 
-        <li class="page-item" th:classappend="${burgers.number eq 0}?'disabled':''">
-            <a th:href="@{'/' + '?searchQuery=' + ${burgerSearchDto.searchQuery} + '&page=' + ${burgers.number-1}}"
-               aria-label='Previous' class="page-link">
-                <span aria-hidden='true'>Previous</span>
-            </a>
-        </li>
+    <div th:with="start=${(burgers.number/maxPage)*maxPage + 1}, end=(${(burgers.totalPages == 0) ? 1 : (start + (maxPage - 1) < burgers.totalPages ? start + (maxPage - 1) : burgers.totalPages)})">
+        <ul class="pagination justify-content-center">
 
-        <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}"
-            th:classappend="${burgers.number eq page-1}?'active':''">
-            <a th:href="@{'/' +'?searchQuery=' + ${burgerSearchDto.searchQuery} + '&page=' + ${page-1}}"
-               th:inline="text" class="page-link">[[${page}]]</a>
-        </li>
+            <li class="page-item" th:classappend="${burgers.number eq 0}?'disabled':''">
+                <a th:href="@{'/' + '?searchQuery=' + ${burgerSearchDto.searchQuery} + '&page=' + ${burgers.number-1}}"
+                   aria-label='Previous' class="page-link">
+                    <span aria-hidden='true'>Previous</span>
+                </a>
+            </li>
 
-        <li class="page-item" th:classappend="${burgers.number+1 ge burgers.totalPages}?'disabled':''">
-            <a th:href="@{'/' +'?searchQuery=' + ${burgerSearchDto.searchQuery} + '&page=' + ${burgers.number+1}}"
-               aria-label='Next' class="page-link">
-                <span aria-hidden='true'>Next</span>
-            </a>
-        </li>
+            <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}"
+                th:classappend="${burgers.number eq page-1}?'active':''">
+                <a th:href="@{'/' +'?searchQuery=' + ${burgerSearchDto.searchQuery} + '&page=' + ${page-1}}"
+                   th:inline="text" class="page-link">[[${page}]]</a>
+            </li>
 
-    </ul>
-</div>
+            <li class="page-item" th:classappend="${burgers.number+1 ge burgers.totalPages}?'disabled':''">
+                <a th:href="@{'/' +'?searchQuery=' + ${burgerSearchDto.searchQuery} + '&page=' + ${burgers.number+1}}"
+                   aria-label='Next' class="page-link">
+                    <span aria-hidden='true'>Next</span>
+                </a>
+            </li>
 
+        </ul>
+    </div>
 </div>
 </html>

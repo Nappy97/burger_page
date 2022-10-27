@@ -41,6 +41,8 @@ public class Jqurey2 {
             dataSend.close();
             int result = urlCon.getResponseCode();
             InputStream dataGet;
+            log.info(String.valueOf(result));
+            log.info(parameter);
             if (result == 200) {
                 dataGet = urlCon.getInputStream();
             } else {
