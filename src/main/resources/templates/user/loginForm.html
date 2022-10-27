@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/mainLayout}">
+<html xmlns:th="http://www.thymeleaf.org">
 
-<th:block layout:fragment="css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/fonts/iconic/css/material-design-iconic-font.min.css">
     <link rel="stylesheet" href="/css/util.css">
     <link rel="stylesheet" href="/css/main.css">
-</th:block>
+</head>
+>
 
-
-<div layout:fragment="content" class="background-image1">
+<body>
+<div class="background-image1">
     <div class="limiter">
         <div class="container-login100">
             <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
@@ -87,4 +88,5 @@
 </div>
 
 <div id="dropDownSelect1"></div>
+</body>
 </html>

@@ -41,7 +41,8 @@ public class BurgerController {
     // 등록
     @PostMapping(value = "/admin/burger/new")
     public String burgerNew(@Valid BurgerFormDto burgerFormDto, BindingResult bindingResult, Model model,
-                            @RequestParam(name = "burgerImgFile") List<MultipartFile> burgerImgFileList) {
+                            @RequestParam(name = "burgerImgFile") List<MultipartFile> burgerImgFileList, @AuthenticationPrincipal PrincipalDetail principalDetail) {
+        model.addAttribute("principal", principalDetail.getUser());
         if (bindingResult.hasErrors()) {
             return "burger/burgerForm";
         }
@@ -96,7 +97,8 @@ public class BurgerController {
     // 수정
     @PostMapping(value = "/admin/burger/{burgerId}")
     public String burgerUpdate(@Valid BurgerFormDto burgerFormDto, BindingResult bindingResult, Model model,
-                               @RequestParam(name = "burgerImgFile") List<MultipartFile> burgerImgFileList){
+                               @RequestParam(name = "burgerImgFile") List<MultipartFile> burgerImgFileList, @AuthenticationPrincipal PrincipalDetail principalDetail){
+        model.addAttribute("principal", principalDetail.getUser());
         if (bindingResult.hasErrors()){
             return "burger/burgerForm";
         }

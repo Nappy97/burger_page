@@ -21,7 +21,7 @@
       <div class="fieldset">
         <label>닉네임<span>*</span></label>
         <input type="text" class="input" placeholder="닉네임" name="nickname" title="이름" id="nickname"
-               required>
+               th:value="${#authentication.principal.nickname}" required>
         <div class='nickF-message hide msg'>4자 이상의 글자와 숫자를 조합해주세요</div>
         <div class='nickS-message hide msg success'>가능한 닉네임입니다.</div>
         <span class="nick_input_re_1 msg success">중복되지 않은 닉네임입니다.</span>
@@ -32,7 +32,7 @@
       <div class="fieldset">
         <label>이름<span>*</span></label>
         <input type="text" class="input" placeholder="이름" name="name" title="이름" id="name"
-               required>
+               th:value="${#authentication.principal.name}" required>
         <div class="illegible-message hide msg">한글만 입력해주세요</div>
         <div class="readable-message hide msg success">한글만 입력되었습니다!</div>
       </div>
@@ -40,7 +40,7 @@
       <div class="fieldset">
         <label>우편번호<span>*</span></label>
         <input type="text" class="input" placeholder="우편번호" name="zipcode" title="우편번호" id="zipcode"
-               style="width: 40%; display: inline;" required
+               style="width: 40%; display: inline;" th:value="${#authentication.principal.zipcode}" required
                readonly>
         <button type="button" class="btn btn-default" onclick="execPostCode();">
           <i class="fa fa-search"></i> 우편번호 찾기
@@ -52,7 +52,7 @@
       <div class="fieldset">
         <label>주소<span>*</span></label>
         <input type="text" class="input" placeholder="주소" name="address" title="주소" id="address"
-               required readonly>
+               th:value="${#authentication.principal.address}" required readonly>
         <div class="addressF-message hide msg">공백입니다.</div>
         <div class="addressS-message hide msg success">입력되었습니다!</div>
       </div>
@@ -60,7 +60,7 @@
       <div class="fieldset">
         <label>상세주소<span>*</span></label>
         <input type="text" class="input" placeholder="상세주소" name="detailAddress" title="상세주소"
-               id="detailAddress" required>
+               id="detailAddress" th:value="${#authentication.principal.detailAddress}" required>
         <div class="dAddressF-message hide msg">공백입니다.</div>
         <div class="dAddressS-message hide msg success">입력되었습니다!</div>
       </div>

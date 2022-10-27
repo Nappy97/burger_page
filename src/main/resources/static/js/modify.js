@@ -464,7 +464,6 @@ function isSubmitButton() {
 
 document.getElementById("joinForm").onsubmit = function () {
     if (isAllCheck()) {
-        alert('응애!');
         return true;
     } else {
         alert('모든 조건이 충족되어야합니다.');
@@ -515,7 +514,7 @@ let index = {
             cache: false,
             contentType: 'application/json; charset=utf-8',
             success: function (res) {
-                alert("hi")
+                alert("회원수정이 완료되었습니다")
                 location.href = "/";
             }, error: function (err) {
                 alert(JSON.stringify(err))
