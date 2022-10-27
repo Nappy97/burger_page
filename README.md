@@ -1,7 +1,7 @@
 # burger_page
 
 # 프로젝트 기간 
-  2022/09/21 ~ 
+  2022/09/21 ~ 2022/10/27
 
 # 개발환경
 
@@ -32,13 +32,4 @@
 ## Build Tools
 ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white)
 
-# 추가예정
-## 1. OAUTH(완)
-## 2. 결제 (결제시스템 추가하기 (완))
-## 3. 관리자 통계 보기 (완)
-## 4. 주소 api (완)
-## 5. 장바구니 (완)
-## 6. 템플릿 & 유효성 (완)
-## 7. 구조 (완)
-## 8. etc (csrf 완 / 모든 사이트 다열림 / 이미지 파일 잘 받아옴)
-## 9. 뷰 다듬기
+
