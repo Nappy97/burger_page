@@ -35,11 +35,12 @@ public class CartBurger extends BaseEntity {
         cartBurger.setCount(count);
         return cartBurger;
     }
-    public void addCount(int count){
+
+    public void addCount(int count) {
         this.count += count;
     }
 
-    public void updateCount(int count){
+    public void updateCount(int count) {
         this.count = count;
     }
 }
