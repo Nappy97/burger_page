@@ -6,14 +6,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class    OrderBurgerDto {
+public class OrderBurgerDto {
 
     private String burgerName;
     private int count;
     private int orderPrice;
     private String imgUrl;
 
-    public OrderBurgerDto(OrderBurger orderBurger, String imgUrl){
+    public OrderBurgerDto(OrderBurger orderBurger, String imgUrl) {
         this.burgerName = orderBurger.getBurger().getBurgerName();
         this.count = orderBurger.getCount();
         this.orderPrice = orderBurger.getOrderPrice();

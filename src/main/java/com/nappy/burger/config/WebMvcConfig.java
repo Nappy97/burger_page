@@ -7,7 +7,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-// 이미지
+
+    // 이미지
     @Value("file:///Users/Nappy/study/")
     String uploadPath;
 

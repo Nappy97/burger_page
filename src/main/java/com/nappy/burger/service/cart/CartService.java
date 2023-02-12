@@ -124,7 +124,8 @@ public class CartService {
         List<OrderDto> orderDtoList = new ArrayList<>();
 
         for (CartOrderDto cartOrderDto : cartOrderDtoList) {
-            CartBurger cartBurger = cartBurgerRepository.findById(cartOrderDto.getCartBurgerId()).orElseThrow(EntityExistsException::new);
+            CartBurger cartBurger = cartBurgerRepository.findById(cartOrderDto.getCartBurgerId()).
+                    orElseThrow(EntityExistsException::new);
             OrderDto orderDto = new OrderDto();
             orderDto.setBurgerId(cartBurger.getBurger().getId());
             orderDto.setCount(cartBurger.getCount());

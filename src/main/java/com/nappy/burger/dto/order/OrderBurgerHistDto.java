@@ -18,8 +18,6 @@ public class OrderBurgerHistDto {
 
     private Integer price;
 
-
-
     @QueryProjection
     public OrderBurgerHistDto(Long id, int count, String imgUrl, Integer price, String burgerName){
         this.burgerId = id;
